@@ -16,23 +16,29 @@ export class UserService {
     const saltRounds = 10;
     const passwordHash = await bcrypt.hash(password, saltRounds);
 
-    const createdUser = new this.userModel({
+    const createdUser = await this.userModel.create({
       email,
       firstName,
       lastName,
       phoneNumber,
-      passwordHash
+      passwordHash,
     });
-    return createdUser.save();
+
+    return createdUser[0]; // Return the first (and only) created user
   }
   async update(id: string, updateUserDto: UpdateUserDto): Promise<User | null> {
     if (updateUserDto.password) {
       const saltRounds = 10;
-      const passwordHash = await bcrypt.hash(updateUserDto.password, saltRounds);
+      const passwordHash = await bcrypt.hash(
+        updateUserDto.password,
+        saltRounds,
+      );
       updateUserDto = { ...updateUserDto, passwordHash };
       delete updateUserDto.password;
     }
-    return this.userModel.findByIdAndUpdate(id, updateUserDto, { new: true }).exec();
+    return this.userModel
+      .findByIdAndUpdate(id, updateUserDto, { new: true })
+      .exec();
   }
   async findAll(): Promise<User[]> {
     return this.userModel.find().exec();
@@ -42,5 +48,11 @@ export class UserService {
   }
   async remove(id: string): Promise<User | null> {
     return this.userModel.findByIdAndDelete(id).exec();
+  }
+  async findByEmail(email: string): Promise<UserDocument | null> {
+    return this.userModel.findOne({ email }).exec();
+  }
+  async setRefreshToken(userId: string, refreshToken: string): Promise<void> {
+    await this.userModel.findByIdAndUpdate(userId, { refreshToken }).exec();
   }
 }

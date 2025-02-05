@@ -10,7 +10,11 @@ RUN npm install
 
 # Copy the rest of the source code and build the project
 COPY . .
-RUN npm run build
+
+# Run linting, testing, and building the application
+RUN npm run lint \
+ && npm run test:cov \
+ && npm run build
 
 # Stage 2: Create the production image
 FROM node:20-alpine

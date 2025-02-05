@@ -1,5 +1,3 @@
-// user.controller.ts
-import * as bcrypt from 'bcrypt';
 import {
   Controller,
   Get,
@@ -8,46 +6,80 @@ import {
   Param,
   Put,
   Delete,
+  UseGuards,
+  NotFoundException,
 } from '@nestjs/common';
+import {
+  ApiBearerAuth,
+  ApiTags,
+  ApiOperation,
+  ApiResponse,
+} from '@nestjs/swagger';
+import { JwtAuthGuard } from '../auth/jwt-auth.guard';
 import { UserService } from './user.service';
 import { CreateUserDto } from './dto/create-user.dto';
 import { UpdateUserDto } from './dto/update-user.dto';
 
+@ApiBearerAuth()
+@ApiTags('users')
 @Controller('users')
+@UseGuards(JwtAuthGuard)
 export class UserController {
   constructor(private readonly userService: UserService) {}
 
-  // Create a new user
   @Post()
-  async create(@Body() createUserDto: CreateUserDto) {
-    // Assuming createUserDto has properties such as username and email.
+  @ApiOperation({ summary: 'Create a new user' })
+  @ApiResponse({
+    status: 201,
+    description: 'The user has been successfully created.',
+  })
+  @ApiResponse({ status: 400, description: 'Bad Request.' })
+  create(@Body() createUserDto: CreateUserDto) {
     return this.userService.createUser(createUserDto);
   }
 
-  // Retrieve all users
   @Get()
-  async findAll() {
+  @ApiOperation({ summary: 'Get all users' })
+  @ApiResponse({ status: 200, description: 'Return all users.' })
+  findAll() {
     return this.userService.findAll();
   }
 
-  // Retrieve a single user by ID
   @Get(':id')
+  @ApiOperation({ summary: 'Get a user by id' })
+  @ApiResponse({ status: 200, description: 'Return the user.' })
+  @ApiResponse({ status: 404, description: 'User not found.' })
   async findOne(@Param('id') id: string) {
-    return this.userService.findOne(id);
+    const user = await this.userService.findOne(id);
+    if (!user) {
+      throw new NotFoundException(`User with ID ${id} not found`);
+    }
+    return user;
   }
 
-  // Update a user by ID
   @Put(':id')
-  async update(
-    @Param('id') id: string,
-    @Body() updateUserDto: UpdateUserDto,
-  ) {
-    return this.userService.update(id, updateUserDto);
+  @ApiOperation({ summary: 'Update a user' })
+  @ApiResponse({
+    status: 200,
+    description: 'The user has been successfully updated.',
+  })
+  @ApiResponse({ status: 404, description: 'User not found.' })
+  async update(@Param('id') id: string, @Body() updateUserDto: UpdateUserDto) {
+    const user = await this.userService.update(id, updateUserDto);
+    if (!user) {
+      throw new NotFoundException(`User with ID ${id} not found`);
+    }
+    return user;
   }
 
-  // Delete a user by ID
   @Delete(':id')
-  async remove(@Param('id') id: string) {
+  @ApiOperation({ summary: 'Delete a user' })
+  @ApiResponse({
+    status: 200,
+    description: 'The user has been successfully deleted.',
+  })
+  @ApiResponse({ status: 404, description: 'User not found.' })
+  remove(@Param('id') id: string) {
     return this.userService.remove(id);
   }
 }
