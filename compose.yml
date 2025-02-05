@@ -1,0 +1,46 @@
+services:
+  mongo:
+    image: mongo:7
+    container_name: reminder_mongo
+    # We'll rely on Docker networking so no external port needed. 
+    # But you could expose 27017 if you want external access.
+    networks:
+      - reminder-net
+    volumes:
+      - mongo-data:/data/db
+    ports:
+    - "27017:27017"  # Expose MongoDB for external access
+
+  app:
+    build: .
+    container_name: reminder_app
+    # The environment section can hold secrets like MONGO_URI, API keys, etc.
+    # If you want to pass them in at runtime, use .env or GitHub Actions secrets.
+    environment:
+      - MONGO_URI=mongodb://mongo:27017/reminderdb
+      - WEATHER_API_KEY=YOUR_API_KEY_HERE
+    networks:
+      - reminder-net
+    depends_on:
+      - mongo
+    ports:
+      - "3000:3000"  # Next.js typically defaults to port 3000
+
+  mongo-express:
+    image: mongo-express:latest
+    container_name: mongo_express
+    environment:
+      - ME_CONFIG_MONGODB_SERVER=mongo
+      - ME_CONFIG_MONGODB_PORT=27017
+      # Optional: Configure additional settings like authentication if needed
+    networks:
+      - reminder-net
+    ports:
+      - "8081:8081"  # Access mongo-express at http://localhost:8081
+
+networks:
+  reminder-net:
+
+volumes:
+  mongo-data:
+
