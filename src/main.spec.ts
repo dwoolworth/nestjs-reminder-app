@@ -13,7 +13,7 @@ describe('Bootstrap (main.ts)', () => {
     }).compile();
 
     app = moduleFixture.createNestApplication();
-    app.setGlobalPrefix('api');
+    app.setGlobalPrefix('api/v1');
     await app.init();
     configService = app.get<ConfigService>(ConfigService);
   });
@@ -27,7 +27,7 @@ describe('Bootstrap (main.ts)', () => {
   });
 
   it('should set global prefix to "api"', () => {
-    expect((app as any).config.globalPrefix).toBe('api');
+    expect((app as any).config.globalPrefix).toBe('api/v1');
   });
 
   it('should use the correct port', () => {

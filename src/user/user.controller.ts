@@ -9,14 +9,9 @@ import {
   UseGuards,
   NotFoundException,
 } from '@nestjs/common';
-import {
-  ApiBearerAuth,
-  ApiTags,
-  ApiOperation,
-  ApiResponse,
-} from '@nestjs/swagger';
 import { JwtAuthGuard } from '../auth/jwt-auth.guard';
 import { UserService } from './user.service';
+import { ApiBearerAuth, ApiTags, ApiOperation, ApiResponse } from '@nestjs/swagger';
 import { CreateUserDto } from './dto/create-user.dto';
 import { UpdateUserDto } from './dto/update-user.dto';
 
@@ -41,8 +36,12 @@ export class UserController {
   @Get()
   @ApiOperation({ summary: 'Get all users' })
   @ApiResponse({ status: 200, description: 'Return all users.' })
-  findAll() {
-    return this.userService.findAll();
+  async findAll() {
+    const users = await this.userService.findAll();
+    return users.map(user => {
+      const { passwordHash, refreshToken, ...userWithoutSensitiveInfo } = user.toObject();
+      return userWithoutSensitiveInfo;
+    })
   }
 
   @Get(':id')
@@ -54,7 +53,9 @@ export class UserController {
     if (!user) {
       throw new NotFoundException(`User with ID ${id} not found`);
     }
-    return user;
+    // Remove sensitive information
+    const { passwordHash, refreshToken, ...userWithoutSensitiveInfo } = user.toObject();
+    return userWithoutSensitiveInfo;
   }
 
   @Put(':id')
