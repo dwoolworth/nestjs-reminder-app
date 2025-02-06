@@ -118,7 +118,7 @@
 						"header": [],
 						"body": {
 							"mode": "raw",
-							"raw": "{\n    \"firstName\": \"Ned\",\n    \"lastName\": \"Ryerson\",\n    \"email\": \"ned.ryerson@insuranceco.com\",\n    \"password\": \"amirightoramiright?\",\n    \"phoneNumber\": \"14445556666\",\n    \"roles\": [\"subscriber\"]\n}",
+							"raw": "{\n    \"firstName\": \"Ned\",\n    \"lastName\": \"Ryerson\",\n    \"email\": \"ned.ryerson@insuranceco.com\",\n    \"password\": \"\",\n    \"phoneNumber\": \"14445556666\",\n    \"roles\": [\"subscriber\"]\n}",
 							"options": {
 								"raw": {
 									"language": "json"
@@ -159,7 +159,7 @@
 						],
 						"body": {
 							"mode": "raw",
-							"raw": "{\n    \"email\": \"happy@example.com\",\n    \"password\": \"admin\"\n}",
+							"raw": "{\n    \"email\": \"happy@example.com\",\n    \"password\": \"\"\n}",
 							"options": {
 								"raw": {
 									"language": "json"
