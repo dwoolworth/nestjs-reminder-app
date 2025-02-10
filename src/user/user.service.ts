@@ -5,6 +5,7 @@ import { Model } from 'mongoose';
 import { User, UserDocument } from './user.schema';
 import { CreateUserDto } from './dto/create-user.dto';
 import { UpdateUserDto } from './dto/update-user.dto';
+import { FindAllUsersDto } from './dto/find-all-users.dto';
 import * as bcrypt from 'bcrypt';
 
 @Injectable()
@@ -46,8 +47,26 @@ export class UserService {
     }
     return null;
   }
-  async findAll(): Promise<UserDocument[]> {
-    return this.userModel.find().exec();
+  async findAll(queryParams: FindAllUsersDto): Promise<UserDocument[]> {
+    const { sort, order, search } = queryParams;
+
+    let query = this.userModel.find();
+
+    if (search) {
+      query = query.or([
+        { firstName: { $regex: search, $options: 'i' } },
+        { lastName: { $regex: search, $options: 'i' } },
+        { email: { $regex: search, $options: 'i' } },
+        { phoneNumber: { $regex: search, $options: 'i' } },
+      ]);
+    }
+
+    if (sort) {
+      const sortOrder = order === 'desc' ? -1 : 1;
+      query = query.sort({ [sort]: sortOrder });
+    }
+
+    return query.exec();
   }
   async findOne(id: string): Promise<UserDocument | null> {
     return this.userModel.findById(id).exec();

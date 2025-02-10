@@ -3,10 +3,12 @@ import { JwtStrategy } from './jwt.strategy';
 import { UserService } from '../user/user.service';
 import { ConfigService } from '@nestjs/config';
 import { UnauthorizedException } from '@nestjs/common';
+import { UserRole } from '../constants/roles';
+import { UserDocument } from '../user/user.schema';
 
 describe('JwtStrategy', () => {
   let strategy: JwtStrategy;
-  let userService: UserService;
+  let userService: jest.Mocked<UserService>;
 
   beforeEach(async () => {
     const module: TestingModule = await Test.createTestingModule({
@@ -21,38 +23,39 @@ describe('JwtStrategy', () => {
         {
           provide: ConfigService,
           useValue: {
-            get: jest.fn().mockReturnValue('test-secret'),
+            get: jest.fn().mockReturnValue('testSecret'),
           },
         },
       ],
     }).compile();
 
     strategy = module.get<JwtStrategy>(JwtStrategy);
-    userService = module.get<UserService>(UserService);
-  });
-
-  it('should be defined', () => {
-    expect(strategy).toBeDefined();
+    userService = module.get(UserService) as jest.Mocked<UserService>;
   });
 
   describe('validate', () => {
     it('should return user if found', async () => {
-      const user = { _id: '1', email: 'test@example.com', roles: ['user'] };
-      (userService.findOne as jest.Mock).mockResolvedValue(user);
+      const user: Partial<UserDocument> = {
+        _id: '1',
+        email: 'test@example.com',
+        roles: [UserRole.SUBSCRIBER],
+        firstName: 'John',
+        lastName: 'Doe',
+        phoneNumber: '1234567890',
+        passwordHash: 'hashedPassword',
+        refreshToken: 'refreshToken',
+      };
+      userService.findOne.mockResolvedValue(user as UserDocument);
 
       const result = await strategy.validate({
         sub: '1',
         email: 'test@example.com',
       });
-      expect(result).toEqual({
-        userId: user._id,
-        email: user.email,
-        roles: user.roles,
-      });
+      expect(result).toEqual(user); // Changed this line
     });
 
-    it('should throw an error if user is not found', async () => {
-      (userService.findOne as jest.Mock).mockResolvedValue(null);
+    it('should throw UnauthorizedException if user not found', async () => {
+      userService.findOne.mockResolvedValue(null);
 
       await expect(
         strategy.validate({ sub: '1', email: 'test@example.com' }),

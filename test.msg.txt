@@ -1,0 +1,36 @@
+reminders: [{
+  "dueDate": "02/07/2025",
+  "priority": true,
+  "description": "Buy hamburgers and potato chips for Superbowl party this weekend",
+  "completed": false
+},{
+  "dueDate": "02/07/2025",
+  "priority": true,
+  "description": "Buy extra set of chairs for company coming, folding, outdoor patio chairs",
+  "completed": false
+},{
+  "dueDate": "02/07/2025",
+  "priority": false,
+  "description": "Stop by front-desk to pick up packages and messages from Amazon",
+  "completed": false
+},{
+  "dueDate": "02/07/2025",
+  "pirority": false,
+  "description": "Go to the pool and sit in the sun!"
+  "completed": false
+}]
+weather: {
+  "wind": "SW 5mph",
+  "temperature": "75F",
+  "precipitation": "0.0",
+  "clouds": "0"
+}
+address: {
+  "city": "Summerland Key",
+  "state": "Florida"
+}
+datetime: {
+  "datetime": "02/07/2025 15:33 PM EST"
+}
+
+Given the weather and this user's to-do/reminder list, do you have any inspirational messages that can help motivate them?

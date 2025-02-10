@@ -17,8 +17,13 @@ services:
     # The environment section can hold secrets like MONGO_URI, API keys, etc.
     # If you want to pass them in at runtime, use .env or GitHub Actions secrets.
     environment:
+      - PORT=3080
       - MONGO_URI=mongodb://mongo:27017/reminderdb
       - WEATHER_API_KEY=YOUR_API_KEY_HERE
+      - JWT_SECRET=YOUR_SECRET_HERE
+      - AI_AGENT_KEY=YOUR_AI_AGENT_KEY_HERE
+      - AI_AGENT_ENDPOINT=https://url-here
+      - GOOGLE_MAPS_API_KEY=YOUR_GOOGLE_MAPS_API_KEY_HERE
     networks:
       - reminder-net
     depends_on:

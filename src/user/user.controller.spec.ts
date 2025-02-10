@@ -4,26 +4,22 @@ import { UserService } from './user.service';
 import { CreateUserDto } from './dto/create-user.dto';
 import { UpdateUserDto } from './dto/update-user.dto';
 import { NotFoundException } from '@nestjs/common';
+import { FindAllUsersDto } from './dto/find-all-users.dto';
+import { User, UserDocument } from './user.schema';
+import { UserRole } from '../constants/roles';
 
 describe('UserController', () => {
   let controller: UserController;
-  let service: UserService;
+  let mockUserService: jest.Mocked<UserService>;
 
-  const mockUser = {
+  const mockUser: Partial<UserDocument> = {
     _id: '1',
     email: 'test@example.com',
     firstName: 'John',
     lastName: 'Doe',
     phoneNumber: '1234567890',
-    roles: ['subscriber'],
-  };
-
-  const mockUserService = {
-    createUser: jest.fn().mockResolvedValue(mockUser),
-    findAll: jest.fn().mockResolvedValue([mockUser]),
-    findOne: jest.fn().mockResolvedValue(mockUser),
-    update: jest.fn().mockResolvedValue(mockUser),
-    remove: jest.fn().mockResolvedValue(mockUser),
+    roles: [UserRole.SUBSCRIBER],
+    refreshToken: '',
   };
 
   beforeEach(async () => {
@@ -32,13 +28,19 @@ describe('UserController', () => {
       providers: [
         {
           provide: UserService,
-          useValue: mockUserService,
+          useValue: {
+            findAll: jest.fn(),
+            findOne: jest.fn(),
+            createUser: jest.fn(),
+            update: jest.fn(),
+            remove: jest.fn(),
+          },
         },
       ],
     }).compile();
 
     controller = module.get<UserController>(UserController);
-    service = module.get<UserService>(UserService);
+    mockUserService = module.get(UserService) as jest.Mocked<UserService>;
   });
 
   it('should be defined', () => {
@@ -55,6 +57,7 @@ describe('UserController', () => {
         password: 'password123',
       };
 
+      mockUserService.createUser.mockResolvedValue(mockUser as User);
       expect(await controller.create(createUserDto)).toEqual(mockUser);
       expect(mockUserService.createUser).toHaveBeenCalledWith(createUserDto);
     });
@@ -62,37 +65,52 @@ describe('UserController', () => {
 
   describe('findAll', () => {
     it('should return an array of users', async () => {
-      expect(await controller.findAll()).toEqual([mockUser]);
-      expect(mockUserService.findAll).toHaveBeenCalled();
+      mockUserService.findAll.mockResolvedValue([mockUser as UserDocument]);
+
+      const queryParams: FindAllUsersDto = {};
+      const result = await controller.findAll(queryParams);
+      expect(result).toEqual([mockUser]);
+      expect(mockUserService.findAll).toHaveBeenCalledWith(queryParams);
+    });
+
+    it('should pass query parameters to service', async () => {
+      const queryParams: FindAllUsersDto = { search: 'John', sort: 'firstName', order: 'asc' };
+      await controller.findAll(queryParams);
+      expect(mockUserService.findAll).toHaveBeenCalledWith(queryParams);
     });
   });
 
   describe('findOne', () => {
     it('should return a user by id', async () => {
-      expect(await controller.findOne('1')).toEqual(mockUser);
-      expect(mockUserService.findOne).toHaveBeenCalledWith('1');
-    });
+      mockUserService.findOne.mockResolvedValue(mockUser as UserDocument);
 
-    it('should throw NotFoundException if user is not found', async () => {
-      mockUserService.findOne.mockResolvedValueOnce(null);
-      await expect(controller.findOne('nonexistent')).rejects.toThrow(
-        NotFoundException,
-      );
-    });
-  });
+            expect(await controller.findOne('1')).toEqual(mockUser);
+            expect(mockUserService.findOne).toHaveBeenCalledWith('1');
+          });
 
-  describe('update', () => {
-    it('should update a user', async () => {
-      const updateUserDto: UpdateUserDto = {
-        firstName: 'Jane',
-      };
+          it('should throw NotFoundException if user is not found', async () => {
+            mockUserService.findOne.mockResolvedValue(null);
 
-      expect(await controller.update('1', updateUserDto)).toEqual(mockUser);
-      expect(mockUserService.update).toHaveBeenCalledWith('1', updateUserDto);
-    });
+            await expect(controller.findOne('nonexistent')).rejects.toThrow(
+              NotFoundException,
+            );
+          });
+        });
 
-    it('should throw NotFoundException if user to update is not found', async () => {
-      mockUserService.update.mockResolvedValueOnce(null);
+        describe('update', () => {
+          it('should update a user', async () => {
+            const updateUserDto: UpdateUserDto = { firstName: 'Jane' };
+            mockUserService.update.mockResolvedValue({ ...mockUser, ...updateUserDto } as UserDocument);
+
+            expect(await controller.update('1', updateUserDto)).toEqual({
+              ...mockUser,
+              ...updateUserDto,
+            });
+            expect(mockUserService.update).toHaveBeenCalledWith('1', updateUserDto);
+          });
+
+          it('should throw NotFoundException if user to update is not found', async () => {
+            mockUserService.update.mockResolvedValue(null);
       await expect(controller.update('nonexistent', {})).rejects.toThrow(
         NotFoundException,
       );
@@ -101,12 +119,13 @@ describe('UserController', () => {
 
   describe('remove', () => {
     it('should remove a user', async () => {
+      mockUserService.remove.mockResolvedValue(mockUser as User);
       expect(await controller.remove('1')).toEqual(mockUser);
       expect(mockUserService.remove).toHaveBeenCalledWith('1');
     });
 
     it('should return null if user to remove is not found', async () => {
-      mockUserService.remove.mockResolvedValueOnce(null);
+      mockUserService.remove.mockResolvedValue(null);
       expect(await controller.remove('nonexistent')).toBeNull();
     });
   });
