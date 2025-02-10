@@ -9,7 +9,7 @@ export class User {
   @Prop({ type: MongooseSchema.Types.ObjectId, auto: true })
   _id: string;
 
-  @Prop({ required: true, unique: true })
+  @Prop({ required: true, unique: true, index: true })
   email: string;
 
   @Prop({ required: true })
