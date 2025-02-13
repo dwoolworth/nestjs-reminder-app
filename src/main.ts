@@ -21,6 +21,8 @@ async function bootstrap() {
   const port = configService.get<number>('PORT', 3080);
   await app.listen(port);
 }
+
+# Application Start
 bootstrap().catch((err) => {
   console.error('Failed to start the application:', err);
   process.exit(1);
