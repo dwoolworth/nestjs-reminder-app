@@ -1,10 +1,9 @@
 {
 	"info": {
-		"_postman_id": "5a4a35ee-8aec-4db4-a58f-42e42beb5b1b",
+		"_postman_id": "16ba8f6d-8cc4-4d15-8104-cf9d38c2dbb7",
 		"name": "Reminders",
 		"schema": "https://schema.getpostman.com/json/collection/v2.1.0/collection.json",
-		"_exporter_id": "794113",
-		"_collection_link": "https://sdiwebdev.postman.co/workspace/Team-Workspace~64658d69-517d-4d00-898e-194501f77e2e/collection/794113-5a4a35ee-8aec-4db4-a58f-42e42beb5b1b?action=share&source=collection_link&creator=794113"
+		"_exporter_id": "28472309"
 	},
 	"item": [
 		{
@@ -252,6 +251,37 @@
 								"api",
 								"v1",
 								"reminder"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "Create Note for the Reminder",
+					"request": {
+						"method": "POST",
+						"header": [],
+						"body": {
+							"mode": "raw",
+							"raw": "{\n    \"title\": \"Monster Inc!!!\"\n}",
+							"options": {
+								"raw": {
+									"language": "json"
+								}
+							}
+						},
+						"url": {
+							"raw": "{{protocol}}://{{hostname}}/api/v1/reminder/67af890f3a9d25a875d5075c/notes",
+							"protocol": "{{protocol}}",
+							"host": [
+								"{{hostname}}"
+							],
+							"path": [
+								"api",
+								"v1",
+								"reminder",
+								"67af890f3a9d25a875d5075c",
+								"notes"
 							]
 						}
 					},
