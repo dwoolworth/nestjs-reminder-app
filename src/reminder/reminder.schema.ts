@@ -17,13 +17,13 @@ export class Reminder {
   @Prop({ required: true })
   description: string;
 
-  @Prop({ required: false })
+  @Prop({ required: false, type: Date, default: Date.now })
   dueDate: Date;
 
-  @Prop({ required: true, default: false })
+  @Prop({ required: false, default: false })
   status: boolean;
 
-  @Prop({ required: true, default: false })
+  @Prop({ required: false, default: false })
   priority: boolean;
 
   @Prop({ type: MongooseSchema.Types.ObjectId, ref: 'User', required: true })

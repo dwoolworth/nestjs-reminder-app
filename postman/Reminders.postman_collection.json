@@ -16,7 +16,7 @@
 						"method": "GET",
 						"header": [],
 						"url": {
-							"raw": "{{protocol}}://{{hostname}}/api/v1/users",
+							"raw": "{{protocol}}://{{hostname}}/api/v1/user",
 							"protocol": "{{protocol}}",
 							"host": [
 								"{{hostname}}"
@@ -24,7 +24,7 @@
 							"path": [
 								"api",
 								"v1",
-								"users"
+								"user"
 							]
 						}
 					},
@@ -36,7 +36,7 @@
 						"method": "GET",
 						"header": [],
 						"url": {
-							"raw": "{{protocol}}://{{hostname}}/api/v1/users/67a4da67e16f6f56a3a8263e",
+							"raw": "{{protocol}}://{{hostname}}/api/v1/user/67a3f90b78a2b947f12434df",
 							"protocol": "{{protocol}}",
 							"host": [
 								"{{hostname}}"
@@ -44,8 +44,8 @@
 							"path": [
 								"api",
 								"v1",
-								"users",
-								"67a4da67e16f6f56a3a8263e"
+								"user",
+								"67a3f90b78a2b947f12434df"
 							]
 						}
 					},
@@ -58,7 +58,7 @@
 						"header": [],
 						"body": {
 							"mode": "raw",
-							"raw": "{\n    \"phoneNumber\": \"12232234349\",\n    \"__v\": 0\n}",
+							"raw": "{\n    \"phoneNumber\": \"12232234349\"\n}\n ",
 							"options": {
 								"raw": {
 									"language": "json"
@@ -66,7 +66,7 @@
 							}
 						},
 						"url": {
-							"raw": "{{protocol}}://{{hostname}}/api/v1/users/67a4da67e16f6f56a3a8263e",
+							"raw": "{{protocol}}://{{hostname}}/api/v1/user/67a3fd930f448332d14cf936",
 							"protocol": "{{protocol}}",
 							"host": [
 								"{{hostname}}"
@@ -74,8 +74,8 @@
 							"path": [
 								"api",
 								"v1",
-								"users",
-								"67a4da67e16f6f56a3a8263e"
+								"user",
+								"67a3fd930f448332d14cf936"
 							]
 						}
 					},
@@ -96,7 +96,7 @@
 							}
 						},
 						"url": {
-							"raw": "{{protocol}}://{{hostname}}/api/v1/users/67a4e49b1ec70930ee0a3af2",
+							"raw": "{{protocol}}://{{hostname}}/api/v1/user/67a4e4b71ec70930ee0a3aff",
 							"protocol": "{{protocol}}",
 							"host": [
 								"{{hostname}}"
@@ -104,8 +104,8 @@
 							"path": [
 								"api",
 								"v1",
-								"users",
-								"67a4e49b1ec70930ee0a3af2"
+								"user",
+								"67a4e4b71ec70930ee0a3aff"
 							]
 						}
 					},
@@ -126,7 +126,7 @@
 							}
 						},
 						"url": {
-							"raw": "{{protocol}}://{{hostname}}/api/v1/users",
+							"raw": "{{protocol}}://{{hostname}}/api/v1/user",
 							"protocol": "{{protocol}}",
 							"host": [
 								"{{hostname}}"
@@ -134,7 +134,7 @@
 							"path": [
 								"api",
 								"v1",
-								"users"
+								"user"
 							]
 						}
 					},
@@ -167,15 +167,91 @@
 							}
 						},
 						"url": {
-							"raw": "{{ protocol }}{{ hostname }}/api/v1/auth/login",
+							"raw": "{{protocol}}://{{hostname}}/api/v1/auth/login",
+							"protocol": "{{protocol}}",
 							"host": [
-								"{{ protocol }}{{ hostname }}"
+								"{{hostname}}"
 							],
 							"path": [
 								"api",
 								"v1",
 								"auth",
 								"login"
+							]
+						}
+					},
+					"response": []
+				}
+			]
+		},
+		{
+			"name": "Reminders",
+			"item": [
+				{
+					"name": "Get Reminders",
+					"request": {
+						"method": "GET",
+						"header": [],
+						"url": {
+							"raw": "{{protocol}}://{{hostname}}/api/v1/reminder",
+							"protocol": "{{protocol}}",
+							"host": [
+								"{{hostname}}"
+							],
+							"path": [
+								"api",
+								"v1",
+								"reminder"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "Get Reminder By Id",
+					"request": {
+						"method": "GET",
+						"header": [],
+						"url": {
+							"raw": "{{protocol}}://{{hostname}}/api/v1/reminder/asdfsdfadfasdfasdf",
+							"protocol": "{{protocol}}",
+							"host": [
+								"{{hostname}}"
+							],
+							"path": [
+								"api",
+								"v1",
+								"reminder",
+								"asdfsdfadfasdfasdf"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "Create Reminder",
+					"request": {
+						"method": "POST",
+						"header": [],
+						"body": {
+							"mode": "raw",
+							"raw": "{\n    \"description\": \"Don't forget MONSTERs before taking off!\",\n    \"priority\": false\n}",
+							"options": {
+								"raw": {
+									"language": "json"
+								}
+							}
+						},
+						"url": {
+							"raw": "{{protocol}}://{{hostname}}/api/v1/reminder",
+							"protocol": "{{protocol}}",
+							"host": [
+								"{{hostname}}"
+							],
+							"path": [
+								"api",
+								"v1",
+								"reminder"
 							]
 						}
 					},

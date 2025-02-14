@@ -33,14 +33,6 @@ export class CreateReminderDto {
   priority: boolean;
 
   @ApiProperty({
-    example: '5f966759713670099c988968',
-    description: 'The id of the user who created the reminder or todo',
-  })
-  @IsNotEmpty()
-  @IsString()
-  userId: string;
-
-  @ApiProperty({
     example: [],
     description: 'An array of notes related to the reminder or todo',
   })

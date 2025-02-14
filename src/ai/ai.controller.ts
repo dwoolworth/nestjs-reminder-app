@@ -20,7 +20,7 @@ export class AiController {
     private readonly reminderService: ReminderService
   ) {}
 
-  @Post('getInspirationalMessage')
+  @Post('inspiration')
   @ApiOperation({ summary: 'Get inspirational message based on user context' })
   @ApiBody({
     schema: {

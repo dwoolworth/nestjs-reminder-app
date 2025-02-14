@@ -1,4 +1,5 @@
-import { IsOptional, IsString, IsNumber } from 'class-validator';
+import { IsOptional, IsString, IsInt, Min } from 'class-validator';
+import { Type } from 'class-transformer';
 
 export class FindAllUsersDto {
   @IsOptional()
@@ -14,14 +15,14 @@ export class FindAllUsersDto {
   search?: string;
 
   @IsOptional()
-  @IsNumber()
+  @IsInt()
+  @Min(1)
+  @Type(() => Number)
   page?: number;
 
   @IsOptional()
-  @IsNumber()
+  @IsInt()
+  @Min(1)
+  @Type(() => Number)
   limit?: number;
-
-  @IsOptional()
-  @IsNumber()
-  skip?: number;
 }

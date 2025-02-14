@@ -53,7 +53,7 @@ export class UserController {
     return user;
   }
 
-  @Patch(':id')
+  @Put(':id')
   @ApiOperation({ summary: 'Update a user' })
   @ApiBody({ type: UpdateUserDto })
   @ApiResponse({
