@@ -92,4 +92,12 @@ async deleteAllCompleted(userId: string): Promise<{ deletedCount: number }> {
 
   return { deletedCount: result.deletedCount };
 }
+
+  async addNoteToReminder(userId: string, id: string, note: any): Promise<Reminder> {
+    return this.reminderModel.findOneAndUpdate(
+        {_id: id, user: userId},
+        {$push: {notes: note}},
+        {new: true}
+    );
+  }
 }
