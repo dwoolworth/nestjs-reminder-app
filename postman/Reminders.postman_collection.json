@@ -288,6 +288,76 @@
 					"response": []
 				}
 			]
+		},
+		{
+			"name": "Weather",
+			"item": [
+				{
+					"name": "Get Weather By Latitude and Longitude",
+					"request": {
+						"method": "GET",
+						"header": [],
+						"url": {
+							"raw": "{{protocol}}://{{hostname}}/api/v1/weather?latitude=34.4408435&longitude=-118.4574938",
+							"protocol": "{{protocol}}",
+							"host": [
+								"{{hostname}}"
+							],
+							"path": [
+								"api",
+								"v1",
+								"weather"
+							],
+							"query": [
+								{
+									"key": "latitude",
+									"value": "34.4408435"
+								},
+								{
+									"key": "longitude",
+									"value": "-118.4574938"
+								}
+							]
+						}
+					},
+					"response": []
+				}
+			]
+		},
+		{
+			"name": "OpenAi",
+			"item": [
+				{
+					"name": "Inspirational Message From Ai",
+					"request": {
+						"method": "POST",
+						"header": [],
+						"body": {
+							"mode": "raw",
+							"raw": "{\n    \"latitude\":34.4408435,\n     \"longitude\":-118.4574938\n}",
+							"options": {
+								"raw": {
+									"language": "json"
+								}
+							}
+						},
+						"url": {
+							"raw": "{{protocol}}://{{hostname}}/api/v1/ai/inspiration",
+							"protocol": "{{protocol}}",
+							"host": [
+								"{{hostname}}"
+							],
+							"path": [
+								"api",
+								"v1",
+								"ai",
+								"inspiration"
+							]
+						}
+					},
+					"response": []
+				}
+			]
 		}
 	],
 	"auth": {
