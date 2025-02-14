@@ -3,10 +3,12 @@ import { ConfigModule, ConfigService } from '@nestjs/config';
 import { MongooseModule } from '@nestjs/mongoose';
 import { UserModule } from './user/user.module';
 import { AuthModule } from './auth/auth.module';
+
 import { ReminderModule } from './reminder/reminder.module';
 import { AiModule } from './ai/ai.module';
 import { WeatherModule } from './weather/weather.module';
 import { GeocodingModule } from './geocoding/geocoding.module';
+
 
 @Module({
   imports: [
@@ -25,7 +27,7 @@ import { GeocodingModule } from './geocoding/geocoding.module';
     AuthModule,
     ReminderModule,
     WeatherModule,
-    AiModule,
+    AiModule
   ],
   controllers: [],
   providers: [],

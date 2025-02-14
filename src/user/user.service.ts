@@ -1,4 +1,6 @@
-import { Injectable, NotFoundException } from '@nestjs/common';
+// user.service.ts
+import { Injectable, OnModuleInit } from '@nestjs/common';
+
 import { InjectModel } from '@nestjs/mongoose';
 import { Model } from 'mongoose';
 import { User, UserDocument } from './user.schema';
@@ -6,9 +8,10 @@ import { CreateUserDto } from './dto/create-user.dto';
 import { UpdateUserDto } from './dto/update-user.dto';
 import { FindAllUsersDto } from './dto/find-all-users.dto';
 import * as bcrypt from 'bcrypt';
+import { UserRole } from '../constants/roles';
 
 @Injectable()
-export class UserService {
+export class UserService implements OnModuleInit {
   constructor(@InjectModel(User.name) private userModel: Model<UserDocument>) {}
 
   private sanitizeUser(user: UserDocument): Omit<User, 'passwordHash' | 'refreshToken'> {
@@ -17,6 +20,32 @@ export class UserService {
     delete sanitized.refreshToken;
     return sanitized;
   }
+
+  async onModuleInit() {
+    await this.createInitialUser();
+  }
+
+  private async createInitialUser() {
+    const existingUser = await this.userModel.findOne({ email: 'happy@example.com' });
+
+    if (!existingUser) {
+      const passwordHash = await bcrypt.hash('admin', 10);
+
+      const newUser = await this.userModel.create({
+        email: 'happy@example.com',
+        firstName: 'John',
+        lastName: 'Doe',
+        roles: [UserRole.ADMIN],
+        passwordHash
+        // Add other necessary fields
+      });
+
+      console.log(`Initial admin user ${newUser.email} created`);
+    } else {
+      console.log(`Admin user ${existingUser.email} already exists`);
+    }
+  }
+
   async createUser(createUserDto: CreateUserDto): Promise<{_id: string }> {
     const { email, firstName, lastName, phoneNumber, password } = createUserDto;
     const saltRounds = 10;
@@ -46,7 +75,7 @@ export class UserService {
       .exec();
 
     if (!updatedUser) {
-      throw new NotFoundException(`User with ID "${id}" not found`);
+      throw new Error(`User with ID "${id}" not found`);
     }
 
     return this.sanitizeUser(updatedUser);

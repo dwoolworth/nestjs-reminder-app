@@ -37,6 +37,7 @@ services:
     environment:
       - ME_CONFIG_MONGODB_SERVER=mongo
       - ME_CONFIG_MONGODB_PORT=27017
+      - ME_CONFIG_BASICAUTH=false
       # Optional: Configure additional settings like authentication if needed
     networks:
       - reminder-net
