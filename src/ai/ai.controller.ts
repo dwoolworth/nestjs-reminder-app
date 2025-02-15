@@ -70,6 +70,6 @@ export class AiController {
     // Get AI response
     const response = await this.aiService.getChatCompletion(message);
 
-    return { inspirationalMessage: response };
+    return { inspirationalMessage: response.replace(/"/g, '') };
   }
 }
