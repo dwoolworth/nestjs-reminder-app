@@ -43,17 +43,4 @@ export class NoteService {
   async find(reminderId: string): Promise<Note[]> {
     return await this.noteModel.find({ reminder: reminderId });
   }
-
-  
-  async remove(reminderId: string, id: string): Promise<Note> {
-    const deletedNote = await this.noteModel
-      .findOneAndDelete({ _id: id, reminder: reminderId })
-      .exec();
-    if (!deletedNote) {
-      throw new NotFoundException(
-        `Note with ID "${id}" not found or you don't have permission to delete it`,
-      );
-    }
-    return deletedNote;
-  }
 }
