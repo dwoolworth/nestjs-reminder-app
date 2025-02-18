@@ -18,7 +18,6 @@ import { ApiBearerAuth, ApiTags, ApiOperation, ApiResponse, ApiQuery } from '@ne
 import { JwtAuthGuard } from '../auth/jwt-auth.guard';
 import { Request } from 'express';
 import { Reminder } from './reminder.schema';
-import { CreateNotesDto } from './dto/create-notes.dto'
 
 @ApiBearerAuth()
 @ApiTags('reminder')
@@ -86,25 +85,13 @@ export class ReminderController {
     }
     return deletedReminder;
   }
-@Delete('completed')
-@ApiOperation({ summary: 'Delete all completed reminders for the logged-in user' })
-@ApiResponse({ status: 200, description: 'Completed reminders have been successfully deleted.' })
-async deleteAllCompleted(@Req() req: Request) {
-  const userId = this.getUserId(req);
-  return this.reminderService.deleteAllCompleted(userId);
-}
 
-  @Post(':id/notes')
-  @ApiOperation({ summary: 'Create a new note for the reminder' })
-  @ApiResponse({ status: 201, description: 'The note has been successfully created for the reminder.' })
-  @ApiResponse({ status: 400, description: 'Bad Request.' })
-  async createNotes(@Req() req: Request, @Param('id') id: string, @Body() createNotesDto: CreateNotesDto) {
+  @Delete('completed')
+  @ApiOperation({ summary: 'Delete all completed reminders for the logged-in user' })
+  @ApiResponse({ status: 200, description: 'Completed reminders have been successfully deleted.' })
+  async deleteAllCompleted(@Req() req: Request) {
     const userId = this.getUserId(req);
-    const reminder =  this.reminderService.findOne(userId, id);
-    if (!reminder) {
-      throw new NotFoundException(`Reminder with ID "${id}" not found or you don't have permission to update it`);
-    }
-    return this.reminderService.addNoteToReminder(userId, id, createNotesDto);
+    return this.reminderService.deleteAllCompleted(userId);
   }
 
   private getUserId(req: Request): string {
