@@ -1,16 +1,9 @@
 import { Prop, Schema, SchemaFactory } from '@nestjs/mongoose';
 import { Document, Schema as MongooseSchema } from 'mongoose';
-import { User } from '../user/user.schema';
+import { User } from 'src/user/user.schema';
+import { Note } from 'src/note/note.schema';
 
 export type ReminderDocument = Reminder & Document;
-
-@Schema()
-class Note {
-  @Prop({ required: true })
-  title: string;
-}
-
-const NoteSchema = SchemaFactory.createForClass(Note);
 
 @Schema()
 export class Reminder {
@@ -29,8 +22,8 @@ export class Reminder {
   @Prop({ type: MongooseSchema.Types.ObjectId, ref: 'User', required: true })
   user: User;
 
-  @Prop({ type: [NoteSchema], default: [] })
-  notes: Note[];
+  @Prop({ type: [MongooseSchema.Types.ObjectId], ref: 'Note', required: true, default: [] })
+  notes: [MongooseSchema.Types.ObjectId];
 }
 
 export const ReminderSchema = SchemaFactory.createForClass(Reminder);

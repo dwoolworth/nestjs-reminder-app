@@ -1,0 +1,918 @@
+{
+  "openapi": "3.0.0",
+  "paths": {
+    "/api/v1/user": {
+      "post": {
+        "operationId": "UserController_create",
+        "parameters": [],
+        "requestBody": {
+          "required": true,
+          "content": {
+            "application/json": {
+              "schema": {
+                "$ref": "#/components/schemas/CreateUserDto"
+              }
+            }
+          }
+        },
+        "responses": {
+          "201": {
+            "description": "The user has been successfully created.",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/CreateUserDto"
+                }
+              }
+            }
+          },
+          "400": {
+            "description": "Bad Request."
+          }
+        },
+        "security": [
+          {
+            "bearer": []
+          }
+        ],
+        "summary": "Create a new user",
+        "tags": [
+          "Users"
+        ]
+      },
+      "get": {
+        "operationId": "UserController_findAll",
+        "parameters": [],
+        "responses": {
+          "200": {
+            "description": "Returns an array of users.",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "type": "array",
+                  "items": {
+                    "$ref": "#/components/schemas/CreateUserDto"
+                  }
+                }
+              }
+            }
+          }
+        },
+        "security": [
+          {
+            "bearer": []
+          }
+        ],
+        "summary": "Get all users",
+        "tags": [
+          "Users"
+        ]
+      }
+    },
+    "/api/v1/user/{id}": {
+      "get": {
+        "operationId": "UserController_findOne",
+        "parameters": [
+          {
+            "name": "id",
+            "required": true,
+            "in": "path",
+            "schema": {
+              "type": "string"
+            }
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "Returns the user.",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/CreateUserDto"
+                }
+              }
+            }
+          },
+          "404": {
+            "description": "User not found."
+          }
+        },
+        "security": [
+          {
+            "bearer": []
+          }
+        ],
+        "summary": "Get a user by id",
+        "tags": [
+          "Users"
+        ]
+      },
+      "put": {
+        "operationId": "UserController_update",
+        "parameters": [
+          {
+            "name": "id",
+            "required": true,
+            "in": "path",
+            "schema": {
+              "type": "string"
+            }
+          }
+        ],
+        "requestBody": {
+          "required": true,
+          "content": {
+            "application/json": {
+              "schema": {
+                "$ref": "#/components/schemas/UpdateUserDto"
+              }
+            }
+          }
+        },
+        "responses": {
+          "200": {
+            "description": "The user has been successfully updated.",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/UpdateUserDto"
+                }
+              }
+            }
+          },
+          "404": {
+            "description": "User not found."
+          }
+        },
+        "security": [
+          {
+            "bearer": []
+          }
+        ],
+        "summary": "Update a user",
+        "tags": [
+          "Users"
+        ]
+      },
+      "delete": {
+        "operationId": "UserController_remove",
+        "parameters": [
+          {
+            "name": "id",
+            "required": true,
+            "in": "path",
+            "schema": {
+              "type": "string"
+            }
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "The user has been successfully deleted."
+          },
+          "404": {
+            "description": "User not found."
+          }
+        },
+        "security": [
+          {
+            "bearer": []
+          }
+        ],
+        "summary": "Delete a user",
+        "tags": [
+          "Users"
+        ]
+      }
+    },
+    "/api/v1/geocoding/address": {
+      "get": {
+        "operationId": "GeocodingController_getAddress",
+        "parameters": [
+          {
+            "name": "latitude",
+            "required": true,
+            "in": "query",
+            "schema": {
+              "type": "number"
+            }
+          },
+          {
+            "name": "longitude",
+            "required": true,
+            "in": "query",
+            "schema": {
+              "type": "number"
+            }
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "Returns address"
+          }
+        },
+        "security": [
+          {
+            "bearer": []
+          }
+        ],
+        "summary": "Get address for a location",
+        "tags": [
+          "Geocoding"
+        ]
+      }
+    },
+    "/api/v1/auth/login": {
+      "post": {
+        "operationId": "AuthController_login",
+        "parameters": [],
+        "requestBody": {
+          "required": true,
+          "content": {
+            "application/json": {
+              "schema": {
+                "$ref": "#/components/schemas/LoginDto"
+              }
+            }
+          }
+        },
+        "responses": {
+          "201": {
+            "description": ""
+          }
+        },
+        "tags": [
+          "Auth"
+        ]
+      }
+    },
+    "/api/v1/reminder": {
+      "post": {
+        "operationId": "ReminderController_create",
+        "parameters": [],
+        "requestBody": {
+          "required": true,
+          "content": {
+            "application/json": {
+              "schema": {
+                "$ref": "#/components/schemas/CreateReminderDto"
+              }
+            }
+          }
+        },
+        "responses": {
+          "201": {
+            "description": "The reminder has been successfully created."
+          },
+          "400": {
+            "description": "Bad Request."
+          }
+        },
+        "security": [
+          {
+            "bearer": []
+          }
+        ],
+        "summary": "Create a new reminder",
+        "tags": [
+          "reminder"
+        ]
+      },
+      "get": {
+        "operationId": "ReminderController_findAll",
+        "parameters": [
+          {
+            "name": "page",
+            "required": false,
+            "in": "query",
+            "schema": {
+              "type": "number"
+            }
+          },
+          {
+            "name": "limit",
+            "required": false,
+            "in": "query",
+            "schema": {
+              "type": "number"
+            }
+          },
+          {
+            "name": "showCompleted",
+            "required": false,
+            "in": "query",
+            "schema": {
+              "type": "boolean"
+            }
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "Return all reminders for the user."
+          }
+        },
+        "security": [
+          {
+            "bearer": []
+          }
+        ],
+        "summary": "Get all reminders for the logged-in user",
+        "tags": [
+          "reminder"
+        ]
+      }
+    },
+    "/api/v1/reminder/{id}": {
+      "get": {
+        "operationId": "ReminderController_findOne",
+        "parameters": [
+          {
+            "name": "id",
+            "required": true,
+            "in": "path",
+            "schema": {
+              "type": "string"
+            }
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "Return the reminder."
+          },
+          "404": {
+            "description": "Reminder not found."
+          }
+        },
+        "security": [
+          {
+            "bearer": []
+          }
+        ],
+        "summary": "Get a reminder by id",
+        "tags": [
+          "reminder"
+        ]
+      },
+      "put": {
+        "operationId": "ReminderController_update",
+        "parameters": [
+          {
+            "name": "id",
+            "required": true,
+            "in": "path",
+            "schema": {
+              "type": "string"
+            }
+          }
+        ],
+        "requestBody": {
+          "required": true,
+          "content": {
+            "application/json": {
+              "schema": {
+                "$ref": "#/components/schemas/UpdateReminderDto"
+              }
+            }
+          }
+        },
+        "responses": {
+          "200": {
+            "description": "The reminder has been successfully updated."
+          },
+          "404": {
+            "description": "Reminder not found."
+          }
+        },
+        "security": [
+          {
+            "bearer": []
+          }
+        ],
+        "summary": "Update a reminder",
+        "tags": [
+          "reminder"
+        ]
+      },
+      "delete": {
+        "operationId": "ReminderController_remove",
+        "parameters": [
+          {
+            "name": "id",
+            "required": true,
+            "in": "path",
+            "schema": {
+              "type": "string"
+            }
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "The reminder has been successfully deleted."
+          },
+          "404": {
+            "description": "Reminder not found."
+          }
+        },
+        "security": [
+          {
+            "bearer": []
+          }
+        ],
+        "summary": "Delete a reminder",
+        "tags": [
+          "reminder"
+        ]
+      }
+    },
+    "/api/v1/reminder/completed": {
+      "delete": {
+        "operationId": "ReminderController_deleteAllCompleted",
+        "parameters": [],
+        "responses": {
+          "200": {
+            "description": "Completed reminders have been successfully deleted."
+          }
+        },
+        "security": [
+          {
+            "bearer": []
+          }
+        ],
+        "summary": "Delete all completed reminders for the logged-in user",
+        "tags": [
+          "reminder"
+        ]
+      }
+    },
+    "/api/v1/weather": {
+      "get": {
+        "operationId": "WeatherController_getWeather",
+        "parameters": [
+          {
+            "name": "latitude",
+            "required": true,
+            "in": "query",
+            "description": "Latitude of the location",
+            "schema": {
+              "type": "number"
+            }
+          },
+          {
+            "name": "longitude",
+            "required": true,
+            "in": "query",
+            "description": "Longitude of the location",
+            "schema": {
+              "type": "number"
+            }
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "Returns weather data",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "type": "object",
+                  "properties": {
+                    "main": {
+                      "type": "object",
+                      "properties": {
+                        "temp": {
+                          "type": "number",
+                          "description": "Current temperature in Fahrenheit"
+                        },
+                        "feels_like": {
+                          "type": "number",
+                          "description": "Feels like temperature in Fahrenheit"
+                        },
+                        "humidity": {
+                          "type": "number",
+                          "description": "Humidity percentage"
+                        }
+                      }
+                    },
+                    "wind": {
+                      "type": "object",
+                      "properties": {
+                        "speed": {
+                          "type": "number",
+                          "description": "Wind speed in miles per hour"
+                        }
+                      }
+                    },
+                    "weather": {
+                      "type": "array",
+                      "items": {
+                        "type": "object",
+                        "properties": {
+                          "description": {
+                            "type": "string",
+                            "description": "Brief description of the weather"
+                          }
+                        }
+                      }
+                    }
+                  }
+                }
+              }
+            }
+          },
+          "400": {
+            "description": "Bad Request - Invalid latitude or longitude"
+          },
+          "401": {
+            "description": "Unauthorized - Invalid or missing JWT token"
+          },
+          "500": {
+            "description": "Internal server error - Failed to fetch weather data"
+          }
+        },
+        "security": [
+          {
+            "bearer": []
+          }
+        ],
+        "summary": "Get weather data for a location",
+        "tags": [
+          "Weather"
+        ]
+      }
+    },
+    "/api/v1/ai/inspiration": {
+      "post": {
+        "operationId": "AiController_getInspirationalMessage",
+        "parameters": [],
+        "requestBody": {
+          "required": true,
+          "content": {
+            "application/json": {
+              "schema": {
+                "type": "object",
+                "properties": {
+                  "longitude": {
+                    "type": "number"
+                  },
+                  "latitude": {
+                    "type": "number"
+                  }
+                },
+                "required": [
+                  "longitude",
+                  "latitude"
+                ]
+              }
+            }
+          }
+        },
+        "responses": {
+          "200": {
+            "description": "Returns an inspirational message",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "type": "string"
+                }
+              }
+            }
+          },
+          "400": {
+            "description": "Bad Request"
+          },
+          "401": {
+            "description": "Unauthorized"
+          }
+        },
+        "security": [
+          {
+            "bearer": []
+          }
+        ],
+        "summary": "Get inspirational message based on user context",
+        "tags": [
+          "ai"
+        ]
+      }
+    },
+    "/api/v1/reminder/{id}/notes": {
+      "post": {
+        "operationId": "NoteController_createNotes",
+        "parameters": [
+          {
+            "name": "id",
+            "required": true,
+            "in": "path",
+            "schema": {
+              "type": "string"
+            }
+          }
+        ],
+        "requestBody": {
+          "required": true,
+          "content": {
+            "application/json": {
+              "schema": {
+                "$ref": "#/components/schemas/CreateNoteDto"
+              }
+            }
+          }
+        },
+        "responses": {
+          "201": {
+            "description": "The note has been successfully created for the reminder."
+          },
+          "400": {
+            "description": "Bad Request."
+          }
+        },
+        "security": [
+          {
+            "bearer": []
+          }
+        ],
+        "summary": "Create a new note for the reminder",
+        "tags": [
+          "reminder"
+        ]
+      },
+      "get": {
+        "operationId": "NoteController_findNotes",
+        "parameters": [
+          {
+            "name": "id",
+            "required": true,
+            "in": "path",
+            "schema": {
+              "type": "string"
+            }
+          }
+        ],
+        "responses": {
+          "201": {
+            "description": "The note has been successfully fetched for the reminder. "
+          },
+          "400": {
+            "description": "Bad Request."
+          }
+        },
+        "security": [
+          {
+            "bearer": []
+          }
+        ],
+        "summary": "Find an existing notes for a reminder",
+        "tags": [
+          "reminder"
+        ]
+      }
+    },
+    "/api/v1/reminder/{id}/notes/{noteId}": {
+      "put": {
+        "operationId": "NoteController_updateNote",
+        "parameters": [
+          {
+            "name": "id",
+            "required": true,
+            "in": "path",
+            "schema": {
+              "type": "string"
+            }
+          },
+          {
+            "name": "noteId",
+            "required": true,
+            "in": "path",
+            "schema": {
+              "type": "string"
+            }
+          }
+        ],
+        "requestBody": {
+          "required": true,
+          "content": {
+            "application/json": {
+              "schema": {
+                "$ref": "#/components/schemas/UpdateNoteDto"
+              }
+            }
+          }
+        },
+        "responses": {
+          "201": {
+            "description": "The note has been successfully updated for the reminder. "
+          },
+          "400": {
+            "description": "Bad Request."
+          }
+        },
+        "security": [
+          {
+            "bearer": []
+          }
+        ],
+        "summary": "Update an existing note for a reminder",
+        "tags": [
+          "reminder"
+        ]
+      }
+    }
+  },
+  "info": {
+    "title": "Reminder App API",
+    "description": "The Reminder App API description",
+    "version": "1.0",
+    "contact": {}
+  },
+  "tags": [
+    {
+      "name": "reminders",
+      "description": ""
+    }
+  ],
+  "servers": [],
+  "components": {
+    "securitySchemes": {
+      "bearer": {
+        "scheme": "bearer",
+        "bearerFormat": "JWT",
+        "type": "http"
+      }
+    },
+    "schemas": {
+      "CreateUserDto": {
+        "type": "object",
+        "properties": {
+          "email": {
+            "type": "string",
+            "example": "john@example.com",
+            "description": "The email of the user"
+          },
+          "firstName": {
+            "type": "string",
+            "example": "John",
+            "description": "The first name of the user"
+          },
+          "lastName": {
+            "type": "string",
+            "example": "Doe",
+            "description": "The last name of the user"
+          },
+          "password": {
+            "type": "string",
+            "example": "password123",
+            "description": "The password of the user"
+          },
+          "phoneNumber": {
+            "type": "string",
+            "example": "1234567890",
+            "description": "The phone number of the user"
+          }
+        },
+        "required": [
+          "email",
+          "firstName",
+          "lastName",
+          "password",
+          "phoneNumber"
+        ]
+      },
+      "UpdateUserDto": {
+        "type": "object",
+        "properties": {
+          "email": {
+            "type": "string",
+            "example": "john@example.com",
+            "description": "The email of the user"
+          },
+          "firstName": {
+            "type": "string",
+            "example": "John",
+            "description": "The first name of the user"
+          },
+          "lastName": {
+            "type": "string",
+            "example": "Doe",
+            "description": "The last name of the user"
+          },
+          "phoneNumber": {
+            "type": "string",
+            "example": "1234567890",
+            "description": "The phone number of the user"
+          },
+          "password": {
+            "type": "string",
+            "example": "password123",
+            "description": "The new password of the user"
+          }
+        },
+        "required": [
+          "email",
+          "firstName",
+          "lastName",
+          "phoneNumber",
+          "password"
+        ]
+      },
+      "LoginDto": {
+        "type": "object",
+        "properties": {
+          "email": {
+            "type": "string",
+            "example": "john@example.com",
+            "description": "The email of the user"
+          },
+          "password": {
+            "type": "string",
+            "example": "password123",
+            "description": "The password of the user"
+          }
+        },
+        "required": [
+          "email",
+          "password"
+        ]
+      },
+      "CreateReminderDto": {
+        "type": "object",
+        "properties": {
+          "description": {
+            "type": "string",
+            "example": "Meeting at 10 AM",
+            "description": "The description of the reminder or todo"
+          },
+          "dueDate": {
+            "format": "date-time",
+            "type": "string",
+            "example": "2022-01-15T10:00:00.000Z",
+            "description": "The date and time when the reminder or todo is due"
+          },
+          "status": {
+            "type": "boolean",
+            "example": true,
+            "description": "The status of the reminder or todo (true for completed, false for not completed)"
+          },
+          "priority": {
+            "type": "boolean",
+            "example": true,
+            "description": "Indicates this reminder is a priority"
+          }
+        },
+        "required": [
+          "description",
+          "dueDate",
+          "status",
+          "priority"
+        ]
+      },
+      "UpdateReminderDto": {
+        "type": "object",
+        "properties": {
+          "description": {
+            "type": "string",
+            "example": "Meeting at 10 AM",
+            "description": "The description of the reminder or todo"
+          },
+          "dueDate": {
+            "format": "date-time",
+            "type": "string",
+            "example": "2022-01-15T10:00:00.000Z",
+            "description": "The date and time when the reminder or todo is due"
+          },
+          "status": {
+            "type": "boolean",
+            "example": true,
+            "description": "The status of the reminder or todo (true for completed, false for not completed)"
+          },
+          "priority": {
+            "type": "boolean",
+            "example": true,
+            "description": "Indicates this reminder is a priority"
+          }
+        }
+      },
+      "CreateNoteDto": {
+        "type": "object",
+        "properties": {
+          "title": {
+            "type": "string",
+            "example": "I need to buy groceries",
+            "description": "The note that should be added to the reminders"
+          }
+        },
+        "required": [
+          "title"
+        ]
+      },
+      "UpdateNoteDto": {
+        "type": "object",
+        "properties": {
+          "title": {
+            "type": "string",
+            "example": "I need to buy groceries",
+            "description": "The note that should be added to the reminders"
+          }
+        }
+      }
+    }
+  }
+}

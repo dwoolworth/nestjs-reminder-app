@@ -39,12 +39,4 @@ export class CreateReminderDto {
   })
   @IsNumber()
   priority: boolean;
-
-  @ApiProperty({
-    example: [],
-    description: 'An array of notes related to the reminder or todo',
-  })
-  @IsNotEmpty()
-  @IsArray()
-  notes?: [string];
 }
