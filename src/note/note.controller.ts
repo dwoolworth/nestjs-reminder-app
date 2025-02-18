@@ -34,7 +34,7 @@ export class NoteController {
     private readonly noteService: NoteService,
   ) {}
 
-  @Post(':id/notes')
+  @Post(':reminderId/notes')
   @ApiOperation({ summary: 'Create a new note for the reminder' })
   @ApiResponse({
     status: 201,
@@ -43,21 +43,21 @@ export class NoteController {
   @ApiResponse({ status: 400, description: 'Bad Request.' })
   async createNotes(
     @Req() req: Request,
-    @Param('id') id: string,
+    @Param('reminderId') reminderId: string,
     @Body() createNoteDto: CreateNoteDto,
   ) {
     const userId = this.getUserId(req);
-    const reminder = await this.reminderService.findOne(userId, id);
+    const reminder = await this.reminderService.findOne(userId, reminderId)
     if (!reminder) {
       throw new NotFoundException(
-        `Reminder with ID "${id}" not found or you don't have permission to update it`,
+        `Reminder with ID "${reminderId}" not found or you don't have permission to update it`,
       );
     }
 
-    return this.noteService.create(id, createNoteDto);
+    return this.noteService.create(reminder, createNoteDto);
   }
 
-  @Put(':id/notes/:noteId')
+  @Put(':reminderId/notes/:noteId')
   @ApiOperation({ summary: 'Update an existing note for a reminder' })
   @ApiResponse({
     status: 201,
@@ -66,23 +66,22 @@ export class NoteController {
   @ApiResponse({ status: 400, description: 'Bad Request.' })
   async updateNote(
     @Req() req: Request,
-    @Param('id') id: string,
+    @Param('reminderId') reminderId: string,
     @Param('noteId') noteId: string,
     @Body() updateNoteDto: UpdateNoteDto,
   ): Promise<Note> {
     const userId = this.getUserId(req);
-    const reminder = await this.reminderService.findOne(userId, id);
-
+    const reminder = await this.reminderService.findOne(userId, reminderId);
     if (!reminder) {
       throw new NotFoundException(
-        `Reminder with ID "${id}" not found or you don't have permission to update it`,
+        `Reminder with ID "${reminderId}" not found or you don't have permission to update it`,
       );
     }
 
-    return this.noteService.update(id, noteId, updateNoteDto);
+    return this.noteService.update(reminderId, noteId, updateNoteDto);
   }
 
-  @Get(':id/notes')
+  @Get(':reminderId/notes')
   @ApiOperation({ summary: 'Find an existing notes for a reminder' })
   @ApiResponse({
     status: 201,
@@ -91,21 +90,43 @@ export class NoteController {
   @ApiResponse({ status: 400, description: 'Bad Request.' })
   async findNotes(
     @Req() req: Request,
-    @Param('id') id: string,
+    @Param('reminderId') reminderId: string,
   ): Promise<Note[]> {
     const userId = this.getUserId(req);
-    const reminder = await this.reminderService.findOne(userId, id);
-
+    const reminder = await this.reminderService.findOne(userId, reminderId)
     if (!reminder) {
       throw new NotFoundException(
-        `Reminder with ID "${id}" not found or you don't have permission to update it`,
+        `Reminder with ID "${reminderId}" not found or you don't have permission to update it`,
       );
     }
 
-    return this.noteService.find(id);
+    return this.noteService.findAll(reminderId);
   }
 
-  @Delete(':id/notes/:noteId')
+  @Get(':reminderId/notes/:noteId')
+  @ApiOperation({ summary: 'Find an existing notes for a reminder' })
+  @ApiResponse({
+    status: 201,
+    description: 'The note has been successfully fetched for the reminder. ',
+  })
+  @ApiResponse({ status: 400, description: 'Bad Request.' })
+  async findNote(
+    @Req() req: Request,
+    @Param('reminderId') reminderId: string,
+    @Param('noteId') noteId: string,
+  ): Promise<Note> {
+    const userId = this.getUserId(req);
+    const reminder = await this.reminderService.findOne(userId, reminderId)
+    if (!reminder) {
+      throw new NotFoundException(
+        `Reminder with ID "${reminderId}" not found or you don't have permission to update it`,
+      );
+    }
+
+    return this.noteService.find(reminderId, noteId);
+  }
+
+  @Delete(':reminderId/notes/:noteId')
   @ApiOperation({summary: 'Delete an existing note for a reminder'})
   @ApiResponse({
     status: 201,
@@ -114,19 +135,18 @@ export class NoteController {
   @ApiResponse({ status: 400, description: 'Bad Request.' })
   async deleteNote(
     @Req() req: Request,
-    @Param('id') id: string,
+    @Param('reminderId') reminderId: string,
     @Param('noteId') noteId: string,
   ):Promise<Note> {
     const userId = this.getUserId(req);
-    const reminder = await this.reminderService.findOne(userId, id);
-
+    const reminder = await this.reminderService.findOne(userId, reminderId);
     if (!reminder) {
       throw new NotFoundException(
-        `Reminder with ID "${id}" not found or you don't have permission to update it`,
+        `Reminder with ID "${reminderId}" not found or you don't have permission to update it`,
       );
     }
 
-    return this.noteService.remove(id, noteId);
+    return this.noteService.remove(reminder, noteId);
   }
 
   private getUserId(req: Request): string {

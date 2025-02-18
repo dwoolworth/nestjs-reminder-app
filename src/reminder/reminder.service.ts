@@ -30,7 +30,6 @@ export class ReminderService {
     showCompleted: boolean = false,
   ): Promise<{ reminders: Reminder[]; total: number }> {
     const skip = (page - 1) * limit;
-
     const query = { user: userId };
     if (!showCompleted) {
       query['status'] = false; // Assuming 'status' field represents completion status
@@ -50,7 +49,7 @@ export class ReminderService {
   }
 
   // Update other methods similarly
-  async findOne(userId: string, id: string): Promise<Reminder> {
+  async findOne(userId: string, id: string): Promise<ReminderDocument> {
     const reminder = await this.reminderModel
       .findOne({ _id: id, user: userId })
       .populate('notes')
@@ -60,6 +59,7 @@ export class ReminderService {
         `Reminder with ID "${id}" not found or you don't have permission to access it`,
       );
     }
+
     return reminder;
   }
 
@@ -68,6 +68,8 @@ export class ReminderService {
     id: string,
     updateReminderDto: UpdateReminderDto,
   ): Promise<Reminder> {
+    // Note that if the 'notes' field is included in the update, it will be updated as well.
+    // If the 'notes' field is not included in the update, it will not be updated.
     const updatedReminder = await this.reminderModel
       .findOneAndUpdate({ _id: id, user: userId }, updateReminderDto, {
         new: true,
@@ -78,6 +80,7 @@ export class ReminderService {
         `Reminder with ID "${id}" not found or you don't have permission to update it`,
       );
     }
+
     return updatedReminder;
   }
 
@@ -90,13 +93,13 @@ export class ReminderService {
         `Reminder with ID "${id}" not found or you don't have permission to delete it`,
       );
     }
+
     return deletedReminder;
   }
 
   async getTodayReminders(userId: string, date: Date): Promise<Reminder[]> {
     const startOfDay = new Date(date.setHours(0, 0, 0, 0));
     const endOfDay = new Date(date.setHours(23, 59, 59, 999));
-
     return this.reminderModel
       .find({
         user: userId, // Changed from userId to user

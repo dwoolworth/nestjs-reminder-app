@@ -594,12 +594,12 @@
         ]
       }
     },
-    "/api/v1/reminder/{id}/notes": {
+    "/api/v1/reminder/{reminderId}/notes": {
       "post": {
         "operationId": "NoteController_createNotes",
         "parameters": [
           {
-            "name": "id",
+            "name": "reminderId",
             "required": true,
             "in": "path",
             "schema": {
@@ -639,7 +639,7 @@
         "operationId": "NoteController_findNotes",
         "parameters": [
           {
-            "name": "id",
+            "name": "reminderId",
             "required": true,
             "in": "path",
             "schema": {
@@ -666,12 +666,12 @@
         ]
       }
     },
-    "/api/v1/reminder/{id}/notes/{noteId}": {
+    "/api/v1/reminder/{reminderId}/notes/{noteId}": {
       "put": {
         "operationId": "NoteController_updateNote",
         "parameters": [
           {
-            "name": "id",
+            "name": "reminderId",
             "required": true,
             "in": "path",
             "schema": {
@@ -711,6 +711,82 @@
           }
         ],
         "summary": "Update an existing note for a reminder",
+        "tags": [
+          "reminder"
+        ]
+      },
+      "get": {
+        "operationId": "NoteController_findNote",
+        "parameters": [
+          {
+            "name": "reminderId",
+            "required": true,
+            "in": "path",
+            "schema": {
+              "type": "string"
+            }
+          },
+          {
+            "name": "noteId",
+            "required": true,
+            "in": "path",
+            "schema": {
+              "type": "string"
+            }
+          }
+        ],
+        "responses": {
+          "201": {
+            "description": "The note has been successfully fetched for the reminder. "
+          },
+          "400": {
+            "description": "Bad Request."
+          }
+        },
+        "security": [
+          {
+            "bearer": []
+          }
+        ],
+        "summary": "Find an existing notes for a reminder",
+        "tags": [
+          "reminder"
+        ]
+      },
+      "delete": {
+        "operationId": "NoteController_deleteNote",
+        "parameters": [
+          {
+            "name": "reminderId",
+            "required": true,
+            "in": "path",
+            "schema": {
+              "type": "string"
+            }
+          },
+          {
+            "name": "noteId",
+            "required": true,
+            "in": "path",
+            "schema": {
+              "type": "string"
+            }
+          }
+        ],
+        "responses": {
+          "201": {
+            "description": "The note has been successfully deleted for the reminder. "
+          },
+          "400": {
+            "description": "Bad Request."
+          }
+        },
+        "security": [
+          {
+            "bearer": []
+          }
+        ],
+        "summary": "Delete an existing note for a reminder",
         "tags": [
           "reminder"
         ]
@@ -887,6 +963,13 @@
             "type": "boolean",
             "example": true,
             "description": "Indicates this reminder is a priority"
+          },
+          "notes": {
+            "description": "Array of note IDs to set for this reminder",
+            "type": "array",
+            "items": {
+              "type": "string"
+            }
           }
         }
       },

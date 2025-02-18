@@ -12,6 +12,6 @@ import { ReminderService } from './reminder.service';
   ],
   controllers: [ReminderController],
   providers: [ReminderService],
-  exports: [ReminderService], // Add this line to export ReminderService
+  exports: [ReminderService],
 })
 export class ReminderModule {}
