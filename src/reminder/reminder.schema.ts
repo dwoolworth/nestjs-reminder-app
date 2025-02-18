@@ -22,7 +22,7 @@ export class Reminder {
   @Prop({ type: MongooseSchema.Types.ObjectId, ref: 'User', required: true })
   user: User;
 
-  @Prop({ type: MongooseSchema.Types.ObjectId, ref: 'Notes', required: true })
+  @Prop({ type: MongooseSchema.Types.ObjectId, ref: 'Note', required: true })
   notes: Note[];
 }
 
