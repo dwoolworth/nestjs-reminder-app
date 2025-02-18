@@ -25,8 +25,8 @@ import { Request } from 'express';
 import { Note } from './note.schema';
 
 @ApiBearerAuth()
-@ApiTags('reminder')
-@Controller('reminder')
+@ApiTags('Notes')
+@Controller('note')
 @UseGuards(JwtAuthGuard)
 export class NoteController {
   constructor(

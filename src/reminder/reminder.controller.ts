@@ -26,7 +26,7 @@ import { Request } from 'express';
 import { Reminder } from './reminder.schema';
 
 @ApiBearerAuth()
-@ApiTags('reminder')
+@ApiTags('Reminders')
 @Controller('reminder')
 @UseGuards(JwtAuthGuard)
 export class ReminderController {

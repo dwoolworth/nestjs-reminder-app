@@ -275,7 +275,7 @@
         ],
         "summary": "Create a new reminder",
         "tags": [
-          "reminder"
+          "Reminders"
         ]
       },
       "get": {
@@ -318,7 +318,7 @@
         ],
         "summary": "Get all reminders for the logged-in user",
         "tags": [
-          "reminder"
+          "Reminders"
         ]
       }
     },
@@ -350,7 +350,7 @@
         ],
         "summary": "Get a reminder by id",
         "tags": [
-          "reminder"
+          "Reminders"
         ]
       },
       "put": {
@@ -390,7 +390,7 @@
         ],
         "summary": "Update a reminder",
         "tags": [
-          "reminder"
+          "Reminders"
         ]
       },
       "delete": {
@@ -420,7 +420,7 @@
         ],
         "summary": "Delete a reminder",
         "tags": [
-          "reminder"
+          "Reminders"
         ]
       }
     },
@@ -440,7 +440,7 @@
         ],
         "summary": "Delete all completed reminders for the logged-in user",
         "tags": [
-          "reminder"
+          "Reminders"
         ]
       }
     },
@@ -590,11 +590,11 @@
         ],
         "summary": "Get inspirational message based on user context",
         "tags": [
-          "ai"
+          "AI"
         ]
       }
     },
-    "/api/v1/reminder/{reminderId}/notes": {
+    "/api/v1/note/{reminderId}/notes": {
       "post": {
         "operationId": "NoteController_createNotes",
         "parameters": [
@@ -632,7 +632,7 @@
         ],
         "summary": "Create a new note for the reminder",
         "tags": [
-          "reminder"
+          "Notes"
         ]
       },
       "get": {
@@ -662,11 +662,11 @@
         ],
         "summary": "Find an existing notes for a reminder",
         "tags": [
-          "reminder"
+          "Notes"
         ]
       }
     },
-    "/api/v1/reminder/{reminderId}/notes/{noteId}": {
+    "/api/v1/note/{reminderId}/notes/{noteId}": {
       "put": {
         "operationId": "NoteController_updateNote",
         "parameters": [
@@ -712,7 +712,7 @@
         ],
         "summary": "Update an existing note for a reminder",
         "tags": [
-          "reminder"
+          "Notes"
         ]
       },
       "get": {
@@ -750,7 +750,7 @@
         ],
         "summary": "Find an existing notes for a reminder",
         "tags": [
-          "reminder"
+          "Notes"
         ]
       },
       "delete": {
@@ -788,7 +788,7 @@
         ],
         "summary": "Delete an existing note for a reminder",
         "tags": [
-          "reminder"
+          "Notes"
         ]
       }
     }
@@ -801,7 +801,7 @@
   },
   "tags": [
     {
-      "name": "reminders",
+      "name": "Reminders",
       "description": ""
     }
   ],

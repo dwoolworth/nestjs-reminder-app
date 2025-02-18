@@ -12,7 +12,7 @@ async function bootstrap() {
     .setTitle('Reminder App API')
     .setDescription('The Reminder App API description')
     .setVersion('1.0')
-    .addTag('reminders')
+    .addTag('Reminders')
     .addBearerAuth()
     .build();
   const document = SwaggerModule.createDocument(app, config);

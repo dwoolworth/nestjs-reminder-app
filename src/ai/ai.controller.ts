@@ -14,7 +14,7 @@ import { ReminderService } from '../reminder/reminder.service';
 import { Request } from 'express';
 import { User } from '../user/user.schema';
 
-@ApiTags('ai')
+@ApiTags('AI')
 @Controller('ai')
 @UseGuards(JwtAuthGuard)
 @ApiBearerAuth()
