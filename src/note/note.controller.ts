@@ -8,7 +8,7 @@ import {
   Req,
   NotFoundException,
   Get,
-  Delete
+  Delete,
 } from '@nestjs/common';
 import { ReminderService } from '../reminder/reminder.service';
 import { NoteService } from './note.service';
@@ -47,7 +47,7 @@ export class NoteController {
     @Body() createNoteDto: CreateNoteDto,
   ) {
     const userId = this.getUserId(req);
-    const reminder = await this.reminderService.findOne(userId, reminderId)
+    const reminder = await this.reminderService.findOne(userId, reminderId);
     if (!reminder) {
       throw new NotFoundException(
         `Reminder with ID "${reminderId}" not found or you don't have permission to update it`,
@@ -93,7 +93,7 @@ export class NoteController {
     @Param('reminderId') reminderId: string,
   ): Promise<Note[]> {
     const userId = this.getUserId(req);
-    const reminder = await this.reminderService.findOne(userId, reminderId)
+    const reminder = await this.reminderService.findOne(userId, reminderId);
     if (!reminder) {
       throw new NotFoundException(
         `Reminder with ID "${reminderId}" not found or you don't have permission to update it`,
@@ -116,7 +116,7 @@ export class NoteController {
     @Param('noteId') noteId: string,
   ): Promise<Note> {
     const userId = this.getUserId(req);
-    const reminder = await this.reminderService.findOne(userId, reminderId)
+    const reminder = await this.reminderService.findOne(userId, reminderId);
     if (!reminder) {
       throw new NotFoundException(
         `Reminder with ID "${reminderId}" not found or you don't have permission to update it`,
@@ -127,17 +127,17 @@ export class NoteController {
   }
 
   @Delete(':reminderId/notes/:noteId')
-  @ApiOperation({summary: 'Delete an existing note for a reminder'})
+  @ApiOperation({ summary: 'Delete an existing note for a reminder' })
   @ApiResponse({
     status: 201,
-    description: 'The note has been successfully deleted for the reminder. '
+    description: 'The note has been successfully deleted for the reminder. ',
   })
   @ApiResponse({ status: 400, description: 'Bad Request.' })
   async deleteNote(
     @Req() req: Request,
     @Param('reminderId') reminderId: string,
     @Param('noteId') noteId: string,
-  ):Promise<Note> {
+  ): Promise<Note> {
     const userId = this.getUserId(req);
     const reminder = await this.reminderService.findOne(userId, reminderId);
     if (!reminder) {

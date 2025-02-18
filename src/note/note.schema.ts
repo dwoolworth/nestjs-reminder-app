@@ -11,7 +11,11 @@ export class Note {
   @Prop({ required: true })
   title: string;
 
-  @Prop({ type: MongooseSchema.Types.ObjectId, ref: 'Reminder', required: true })
+  @Prop({
+    type: MongooseSchema.Types.ObjectId,
+    ref: 'Reminder',
+    required: true,
+  })
   reminder: MongooseSchema.Types.ObjectId;
 }
 

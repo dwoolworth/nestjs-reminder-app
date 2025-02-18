@@ -6,11 +6,7 @@ import { GeocodingModule } from '../geocoding/geocoding.module';
 import { ReminderModule } from '../reminder/reminder.module';
 
 @Module({
-  imports: [
-    WeatherModule,
-    GeocodingModule,
-    ReminderModule
-  ],
+  imports: [WeatherModule, GeocodingModule, ReminderModule],
   controllers: [AiController],
   providers: [AiService],
 })
