@@ -8,6 +8,7 @@ import {
   Req,
   NotFoundException,
   Get,
+  Delete
 } from '@nestjs/common';
 import { ReminderService } from '../reminder/reminder.service';
 import { NoteService } from './note.service';
@@ -102,6 +103,30 @@ export class NoteController {
     }
 
     return this.noteService.find(id);
+  }
+
+  @Delete(':id/notes/:noteId')
+  @ApiOperation({summary: 'Delete an existing note for a reminder'})
+  @ApiResponse({
+    status: 201,
+    description: 'The note has been successfully deleted for the reminder. '
+  })
+  @ApiResponse({ status: 400, description: 'Bad Request.' })
+  async deleteNote(
+    @Req() req: Request,
+    @Param('id') id: string,
+    @Param('noteId') noteId: string,
+  ):Promise<Note> {
+    const userId = this.getUserId(req);
+    const reminder = await this.reminderService.findOne(userId, id);
+
+    if (!reminder) {
+      throw new NotFoundException(
+        `Reminder with ID "${id}" not found or you don't have permission to update it`,
+      );
+    }
+
+    return this.noteService.remove(id, noteId);
   }
 
   private getUserId(req: Request): string {
