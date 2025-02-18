@@ -84,14 +84,14 @@ export class ReminderService {
       }
     }).exec();
   }
-async deleteAllCompleted(userId: string): Promise<{ deletedCount: number }> {
-  const result = await this.reminderModel.deleteMany({
-    user: userId,
-    status: true // Assuming 'status: true' means the reminder is completed
-  }).exec();
+  async deleteAllCompleted(userId: string): Promise<{ deletedCount: number }> {
+    const result = await this.reminderModel.deleteMany({
+      user: userId,
+      status: true // Assuming 'status: true' means the reminder is completed
+    }).exec();
 
-  return { deletedCount: result.deletedCount };
-}
+    return { deletedCount: result.deletedCount };
+  }
 
   async addNoteToReminder(userId: string, id: string, note: any): Promise<Reminder> {
     return this.reminderModel.findOneAndUpdate(
@@ -100,4 +100,6 @@ async deleteAllCompleted(userId: string): Promise<{ deletedCount: number }> {
         {new: true}
     );
   }
+
+
 }
