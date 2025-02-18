@@ -28,6 +28,9 @@ export class Reminder {
 
   @Prop({ type: MongooseSchema.Types.ObjectId, ref: 'User', required: true })
   user: User;
+
+  @Prop({ type: [NoteSchema], default: [] })
+  notes: Note[];
 }
 
 export const ReminderSchema = SchemaFactory.createForClass(Reminder);

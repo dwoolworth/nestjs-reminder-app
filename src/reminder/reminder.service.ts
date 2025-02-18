@@ -38,6 +38,7 @@ export class ReminderService {
     const [reminders, total] = await Promise.all([
       this.reminderModel
         .find(query)
+        .populate('notes')
         .sort({ priority: -1, dueDate: 1 })
         .skip(skip)
         .limit(limit)
@@ -52,6 +53,7 @@ export class ReminderService {
   async findOne(userId: string, id: string): Promise<Reminder> {
     const reminder = await this.reminderModel
       .findOne({ _id: id, user: userId })
+      .populate('notes')
       .exec();
     if (!reminder) {
       throw new NotFoundException(
@@ -103,6 +105,7 @@ export class ReminderService {
           $lte: endOfDay,
         },
       })
+      .populate('notes')
       .exec();
   }
   async deleteAllCompleted(userId: string): Promise<{ deletedCount: number }> {
