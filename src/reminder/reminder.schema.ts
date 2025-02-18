@@ -24,7 +24,7 @@ export class Reminder {
   @Prop({ type: MongooseSchema.Types.ObjectId, ref: 'User', required: true })
   user: User;
 
-  @Prop({ type: [NoteSchema], default: [] })
+  @Prop({ type: MongooseSchema.Types.ObjectId, ref: 'Notes', required: true })
   notes: Note[];
 }
 
