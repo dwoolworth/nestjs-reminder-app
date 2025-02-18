@@ -8,36 +8,41 @@ import { UpdateReminderDto } from './dto/update-reminder.dto';
 @Injectable()
 export class ReminderService {
   constructor(
-    @InjectModel(Reminder.name) private reminderModel: Model<ReminderDocument>,
+    @InjectModel(Reminder.name)
+    private readonly reminderModel: Model<ReminderDocument>,
   ) {}
 
-  async create(userId: string, createReminderDto: CreateReminderDto): Promise<Reminder> {
+  async create(
+    userId: string,
+    createReminderDto: CreateReminderDto,
+  ): Promise<Reminder> {
     const createdReminder = new this.reminderModel({
       ...createReminderDto,
-      user: userId,  // Changed from userId to user
+      user: userId, // Changed from userId to user
     });
     return createdReminder.save();
   }
 
   async findAll(
-    userId: string, 
-    page: number = 1, 
-    limit: number = 10, 
-    showCompleted: boolean = false
-  ): Promise<{ reminders: Reminder[], total: number }> {
+    userId: string,
+    page: number = 1,
+    limit: number = 10,
+    showCompleted: boolean = false,
+  ): Promise<{ reminders: Reminder[]; total: number }> {
     const skip = (page - 1) * limit;
 
-    let query = { user: userId };
+    const query = { user: userId };
     if (!showCompleted) {
       query['status'] = false; // Assuming 'status' field represents completion status
     }
     const [reminders, total] = await Promise.all([
-      this.reminderModel.find(query)
+      this.reminderModel
+        .find(query)
         .sort({ priority: -1, dueDate: 1 })
         .skip(skip)
         .limit(limit)
         .exec(),
-      this.reminderModel.countDocuments(query)
+      this.reminderModel.countDocuments(query),
     ]);
 
     return { reminders, total };
@@ -45,19 +50,31 @@ export class ReminderService {
 
   // Update other methods similarly
   async findOne(userId: string, id: string): Promise<Reminder> {
-    const reminder = await this.reminderModel.findOne({ _id: id, user: userId }).exec();
+    const reminder = await this.reminderModel
+      .findOne({ _id: id, user: userId })
+      .exec();
     if (!reminder) {
-      throw new NotFoundException(`Reminder with ID "${id}" not found or you don't have permission to access it`);
+      throw new NotFoundException(
+        `Reminder with ID "${id}" not found or you don't have permission to access it`,
+      );
     }
     return reminder;
   }
 
-  async update(userId: string, id: string, updateReminderDto: UpdateReminderDto): Promise<Reminder> {
+  async update(
+    userId: string,
+    id: string,
+    updateReminderDto: UpdateReminderDto,
+  ): Promise<Reminder> {
     const updatedReminder = await this.reminderModel
-      .findOneAndUpdate({ _id: id, user: userId }, updateReminderDto, { new: true })
+      .findOneAndUpdate({ _id: id, user: userId }, updateReminderDto, {
+        new: true,
+      })
       .exec();
     if (!updatedReminder) {
-      throw new NotFoundException(`Reminder with ID "${id}" not found or you don't have permission to update it`);
+      throw new NotFoundException(
+        `Reminder with ID "${id}" not found or you don't have permission to update it`,
+      );
     }
     return updatedReminder;
   }
@@ -67,7 +84,9 @@ export class ReminderService {
       .findOneAndDelete({ _id: id, user: userId })
       .exec();
     if (!deletedReminder) {
-      throw new NotFoundException(`Reminder with ID "${id}" not found or you don't have permission to delete it`);
+      throw new NotFoundException(
+        `Reminder with ID "${id}" not found or you don't have permission to delete it`,
+      );
     }
     return deletedReminder;
   }
@@ -76,30 +95,36 @@ export class ReminderService {
     const startOfDay = new Date(date.setHours(0, 0, 0, 0));
     const endOfDay = new Date(date.setHours(23, 59, 59, 999));
 
-    return this.reminderModel.find({
-      user: userId,  // Changed from userId to user
-      dueDate: {
-        $gte: startOfDay,
-        $lte: endOfDay
-      }
-    }).exec();
+    return this.reminderModel
+      .find({
+        user: userId, // Changed from userId to user
+        dueDate: {
+          $gte: startOfDay,
+          $lte: endOfDay,
+        },
+      })
+      .exec();
   }
   async deleteAllCompleted(userId: string): Promise<{ deletedCount: number }> {
-    const result = await this.reminderModel.deleteMany({
-      user: userId,
-      status: true // Assuming 'status: true' means the reminder is completed
-    }).exec();
+    const result = await this.reminderModel
+      .deleteMany({
+        user: userId,
+        status: true, // Assuming 'status: true' means the reminder is completed
+      })
+      .exec();
 
     return { deletedCount: result.deletedCount };
   }
 
-  async addNoteToReminder(userId: string, id: string, note: any): Promise<Reminder> {
+  async addNoteToReminder(
+    userId: string,
+    id: string,
+    note: any,
+  ): Promise<Reminder> {
     return this.reminderModel.findOneAndUpdate(
-        {_id: id, user: userId},
-        {$push: {notes: note}},
-        {new: true}
+      { _id: id, user: userId },
+      { $push: { notes: note } },
+      { new: true },
     );
   }
-
-
 }

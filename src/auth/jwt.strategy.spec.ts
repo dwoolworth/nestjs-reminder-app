@@ -30,7 +30,7 @@ describe('JwtStrategy', () => {
     }).compile();
 
     strategy = module.get<JwtStrategy>(JwtStrategy);
-    userService = module.get(UserService) as jest.Mocked<UserService>;
+    userService = module.get(UserService);
   });
 
   describe('validate', () => {

@@ -7,14 +7,15 @@ import {
 } from '@nestjs/common';
 import { AuthService } from './auth.service';
 import { Response } from 'express';
+import { LoginDto } from './dto/login.dto';
 
 @Controller('auth')
 export class AuthController {
-  constructor(private authService: AuthService) {}
+  constructor(private readonly authService: AuthService) {}
 
   @Post('login')
   async login(
-    @Body() loginDto: { email: string; password: string },
+    @Body() loginDto: LoginDto,
     @Res({ passthrough: true }) response: Response,
   ) {
     const user = await this.authService.validateUser(

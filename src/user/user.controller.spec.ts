@@ -40,7 +40,7 @@ describe('UserController', () => {
     }).compile();
 
     controller = module.get<UserController>(UserController);
-    mockUserService = module.get(UserService) as jest.Mocked<UserService>;
+    mockUserService = module.get(UserService);
   });
 
   it('should be defined', () => {
@@ -74,7 +74,11 @@ describe('UserController', () => {
     });
 
     it('should pass query parameters to service', async () => {
-      const queryParams: FindAllUsersDto = { search: 'John', sort: 'firstName', order: 'asc' };
+      const queryParams: FindAllUsersDto = {
+        search: 'John',
+        sort: 'firstName',
+        order: 'asc',
+      };
       await controller.findAll(queryParams);
       expect(mockUserService.findAll).toHaveBeenCalledWith(queryParams);
     });
@@ -84,33 +88,36 @@ describe('UserController', () => {
     it('should return a user by id', async () => {
       mockUserService.findOne.mockResolvedValue(mockUser as UserDocument);
 
-            expect(await controller.findOne('1')).toEqual(mockUser);
-            expect(mockUserService.findOne).toHaveBeenCalledWith('1');
-          });
+      expect(await controller.findOne('1')).toEqual(mockUser);
+      expect(mockUserService.findOne).toHaveBeenCalledWith('1');
+    });
 
-          it('should throw NotFoundException if user is not found', async () => {
-            mockUserService.findOne.mockResolvedValue(null);
+    it('should throw NotFoundException if user is not found', async () => {
+      mockUserService.findOne.mockResolvedValue(null);
 
-            await expect(controller.findOne('nonexistent')).rejects.toThrow(
-              NotFoundException,
-            );
-          });
-        });
+      await expect(controller.findOne('nonexistent')).rejects.toThrow(
+        NotFoundException,
+      );
+    });
+  });
 
-        describe('update', () => {
-          it('should update a user', async () => {
-            const updateUserDto: UpdateUserDto = { firstName: 'Jane' };
-            mockUserService.update.mockResolvedValue({ ...mockUser, ...updateUserDto } as UserDocument);
+  describe('update', () => {
+    it('should update a user', async () => {
+      const updateUserDto: UpdateUserDto = { firstName: 'Jane' };
+      mockUserService.update.mockResolvedValue({
+        ...mockUser,
+        ...updateUserDto,
+      } as UserDocument);
 
-            expect(await controller.update('1', updateUserDto)).toEqual({
-              ...mockUser,
-              ...updateUserDto,
-            });
-            expect(mockUserService.update).toHaveBeenCalledWith('1', updateUserDto);
-          });
+      expect(await controller.update('1', updateUserDto)).toEqual({
+        ...mockUser,
+        ...updateUserDto,
+      });
+      expect(mockUserService.update).toHaveBeenCalledWith('1', updateUserDto);
+    });
 
-          it('should throw NotFoundException if user to update is not found', async () => {
-            mockUserService.update.mockResolvedValue(null);
+    it('should throw NotFoundException if user to update is not found', async () => {
+      mockUserService.update.mockResolvedValue(null);
       await expect(controller.update('nonexistent', {})).rejects.toThrow(
         NotFoundException,
       );

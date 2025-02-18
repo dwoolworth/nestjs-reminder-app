@@ -6,8 +6,8 @@ import { firstValueFrom } from 'rxjs';
 @Injectable()
 export class WeatherService {
   constructor(
-    private httpService: HttpService,
-    private configService: ConfigService
+    private readonly httpService: HttpService,
+    private readonly configService: ConfigService,
   ) {}
 
   async getWeather(latitude: number, longitude: number): Promise<any> {
