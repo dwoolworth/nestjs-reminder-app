@@ -5,8 +5,6 @@ import { Note } from 'src/note/note.schema';
 
 export type ReminderDocument = Reminder & Document;
 
-const NoteSchema = SchemaFactory.createForClass(Note);
-
 @Schema()
 export class Reminder {
   @Prop({ required: true })
