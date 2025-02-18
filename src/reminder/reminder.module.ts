@@ -6,7 +6,9 @@ import { ReminderService } from './reminder.service';
 
 @Module({
   imports: [
-    MongooseModule.forFeature([{ name: Reminder.name, schema: ReminderSchema }]),
+    MongooseModule.forFeature([
+      { name: Reminder.name, schema: ReminderSchema },
+    ]),
   ],
   controllers: [ReminderController],
   providers: [ReminderService],

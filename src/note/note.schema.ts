@@ -6,11 +6,15 @@ export type NoteDocument = Note & Document;
 
 @Schema()
 export class Note {
-    @Prop({ required: true })
-    title: string;
+  @Prop({ required: true })
+  title: string;
 
-    @Prop({ type: MongooseSchema.Types.ObjectId, ref: 'Reminder', required: true })
-    reminder: Reminder;
+  @Prop({
+    type: MongooseSchema.Types.ObjectId,
+    ref: 'Reminder',
+    required: true,
+  })
+  reminder: Reminder;
 }
 
 export const NoteSchema = SchemaFactory.createForClass(Note);

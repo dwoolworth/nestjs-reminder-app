@@ -8,12 +8,12 @@ import { ReminderModule } from './reminder/reminder.module';
 import { AiModule } from './ai/ai.module';
 import { WeatherModule } from './weather/weather.module';
 import { GeocodingModule } from './geocoding/geocoding.module';
-
+import { NoteModule } from './note/note.module';
 
 @Module({
   imports: [
     ConfigModule.forRoot({
-      isGlobal: true
+      isGlobal: true,
     }),
     MongooseModule.forRootAsync({
       imports: [ConfigModule],
@@ -27,7 +27,8 @@ import { GeocodingModule } from './geocoding/geocoding.module';
     AuthModule,
     ReminderModule,
     WeatherModule,
-    AiModule
+    AiModule,
+    NoteModule,
   ],
   controllers: [],
   providers: [],

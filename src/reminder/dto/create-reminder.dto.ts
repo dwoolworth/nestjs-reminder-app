@@ -1,4 +1,11 @@
-import { IsNotEmpty, IsDate, IsBoolean, IsNumber, IsString, IsArray } from 'class-validator';
+import {
+  IsNotEmpty,
+  IsDate,
+  IsBoolean,
+  IsNumber,
+  IsString,
+  IsArray,
+} from 'class-validator';
 import { ApiProperty } from '@nestjs/swagger';
 
 export class CreateReminderDto {
@@ -20,7 +27,8 @@ export class CreateReminderDto {
 
   @ApiProperty({
     example: true,
-    description: 'The status of the reminder or todo (true for completed, false for not completed)',
+    description:
+      'The status of the reminder or todo (true for completed, false for not completed)',
   })
   @IsBoolean()
   status: boolean;
