@@ -1,0 +1,4 @@
+export enum REMINDER_STATUS {
+  COMPLETED = 'COMPLETED',
+  PENDING = 'PENDING',
+}

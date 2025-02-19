@@ -1,5 +1,6 @@
 import { Prop, Schema, SchemaFactory } from '@nestjs/mongoose';
 import { Document, Schema as MongooseSchema } from 'mongoose';
+import { REMINDER_STATUS } from './enums/reminder.status';
 
 export type ReminderDocument = Reminder & Document;
 
@@ -14,8 +15,12 @@ export class Reminder {
   @Prop({ required: false, type: Date, default: Date.now })
   dueDate: Date;
 
-  @Prop({ required: false, default: false })
-  status: boolean;
+  @Prop({
+    required: true,
+    enum: REMINDER_STATUS,
+    default: REMINDER_STATUS.PENDING,
+  })
+  status: REMINDER_STATUS;
 
   @Prop({ required: false, default: false })
   priority: boolean;

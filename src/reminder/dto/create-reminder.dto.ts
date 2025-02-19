@@ -1,12 +1,12 @@
 import {
   IsNotEmpty,
   IsDate,
-  IsBoolean,
   IsNumber,
   IsString,
-  IsArray,
+  IsEnum,
 } from 'class-validator';
 import { ApiProperty } from '@nestjs/swagger';
+import { REMINDER_STATUS } from '../enums/reminder.status';
 
 export class CreateReminderDto {
   @ApiProperty({
@@ -26,12 +26,12 @@ export class CreateReminderDto {
   dueDate: Date;
 
   @ApiProperty({
-    example: true,
-    description:
-      'The status of the reminder or todo (true for completed, false for not completed)',
+    example: REMINDER_STATUS.PENDING,
+    enum: REMINDER_STATUS,
+    description: 'The status of the reminder or todo',
   })
-  @IsBoolean()
-  status: boolean;
+  @IsEnum(REMINDER_STATUS)
+  status: REMINDER_STATUS;
 
   @ApiProperty({
     example: true,

@@ -19,11 +19,11 @@ import {
   ApiTags,
   ApiOperation,
   ApiResponse,
-  ApiQuery,
 } from '@nestjs/swagger';
 import { JwtAuthGuard } from '../auth/jwt-auth.guard';
 import { Request } from 'express';
 import { Reminder } from './reminder.schema';
+import { FindReminderDto } from './dto/find-reminder.dto';
 
 @ApiBearerAuth()
 @ApiTags('Reminders')
@@ -53,17 +53,13 @@ export class ReminderController {
     status: 200,
     description: 'Return all reminders for the user.',
   })
-  @ApiQuery({ name: 'page', required: false, type: Number })
-  @ApiQuery({ name: 'limit', required: false, type: Number })
-  @ApiQuery({ name: 'showCompleted', required: false, type: Boolean })
   async findAll(
     @Req() req: Request,
-    @Query('page') page: number = 1,
-    @Query('limit') limit: number = 10,
-    @Query('showCompleted') showCompleted: boolean = false,
+    @Query() findReminderDto: FindReminderDto,
   ) {
+    const { page, limit, status } = findReminderDto;
     const userId = this.getUserId(req);
-    return this.reminderService.findAll(userId, page, limit, showCompleted);
+    return this.reminderService.findAll(userId, page, limit, status);
   }
 
   @Get(':id')
@@ -101,6 +97,19 @@ export class ReminderController {
     return updatedReminder;
   }
 
+  @Delete('completed')
+  @ApiOperation({
+    summary: 'Delete all completed reminders for the logged-in user',
+  })
+  @ApiResponse({
+    status: 200,
+    description: 'Completed reminders have been successfully deleted.',
+  })
+  async deleteAllCompleted(@Req() req: Request) {
+    const userId = this.getUserId(req);
+    return this.reminderService.deleteAllCompleted(userId);
+  }
+
   @Delete(':id')
   @ApiOperation({ summary: 'Delete a reminder' })
   @ApiResponse({
@@ -120,19 +129,6 @@ export class ReminderController {
       );
     }
     return deletedReminder;
-  }
-
-  @Delete('completed')
-  @ApiOperation({
-    summary: 'Delete all completed reminders for the logged-in user',
-  })
-  @ApiResponse({
-    status: 200,
-    description: 'Completed reminders have been successfully deleted.',
-  })
-  async deleteAllCompleted(@Req() req: Request) {
-    const userId = this.getUserId(req);
-    return this.reminderService.deleteAllCompleted(userId);
   }
 
   private getUserId(req: Request): string {
