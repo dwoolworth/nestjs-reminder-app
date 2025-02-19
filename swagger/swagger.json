@@ -285,7 +285,9 @@
             "name": "page",
             "required": false,
             "in": "query",
+            "description": "page",
             "schema": {
+              "example": 1,
               "type": "number"
             }
           },
@@ -293,16 +295,24 @@
             "name": "limit",
             "required": false,
             "in": "query",
+            "description": "Limit",
             "schema": {
+              "example": 10,
               "type": "number"
             }
           },
           {
-            "name": "showCompleted",
+            "name": "status",
             "required": false,
             "in": "query",
+            "description": "The status of the reminder or todo",
             "schema": {
-              "type": "boolean"
+              "example": "PENDING",
+              "type": "string",
+              "enum": [
+                "COMPLETED",
+                "PENDING"
+              ]
             }
           }
         ],
@@ -923,9 +933,13 @@
             "description": "The date and time when the reminder or todo is due"
           },
           "status": {
-            "type": "boolean",
-            "example": true,
-            "description": "The status of the reminder or todo (true for completed, false for not completed)"
+            "type": "string",
+            "example": "PENDING",
+            "enum": [
+              "COMPLETED",
+              "PENDING"
+            ],
+            "description": "The status of the reminder or todo"
           },
           "priority": {
             "type": "boolean",
@@ -955,21 +969,18 @@
             "description": "The date and time when the reminder or todo is due"
           },
           "status": {
-            "type": "boolean",
-            "example": true,
-            "description": "The status of the reminder or todo (true for completed, false for not completed)"
+            "type": "string",
+            "example": "PENDING",
+            "enum": [
+              "COMPLETED",
+              "PENDING"
+            ],
+            "description": "The status of the reminder or todo"
           },
           "priority": {
             "type": "boolean",
             "example": true,
             "description": "Indicates this reminder is a priority"
-          },
-          "notes": {
-            "description": "Array of note IDs to set for this reminder",
-            "type": "array",
-            "items": {
-              "type": "string"
-            }
           }
         }
       },

@@ -4,6 +4,7 @@ import { Model } from 'mongoose';
 import { Reminder, ReminderDocument } from './reminder.schema';
 import { CreateReminderDto } from './dto/create-reminder.dto';
 import { UpdateReminderDto } from './dto/update-reminder.dto';
+import { REMINDER_STATUS } from './enums/reminder.status';
 
 @Injectable()
 export class ReminderService {
@@ -18,6 +19,7 @@ export class ReminderService {
   ): Promise<Reminder> {
     const createdReminder = new this.reminderModel({
       ...createReminderDto,
+      status: REMINDER_STATUS.PENDING,
       user: userId, // Changed from userId to user
     });
     return createdReminder.save();
@@ -25,14 +27,14 @@ export class ReminderService {
 
   async findAll(
     userId: string,
-    page: number = 1,
-    limit: number = 10,
-    showCompleted: boolean = false,
+    page: number,
+    limit: number,
+    status: string,
   ): Promise<{ reminders: Reminder[]; total: number }> {
     const skip = (page - 1) * limit;
     const query = { user: userId };
-    if (!showCompleted) {
-      query['status'] = false; // Assuming 'status' field represents completion status
+    if (status) {
+      query['status'] = status; // Assuming 'status' field represents completion status
     }
     const [reminders, total] = await Promise.all([
       this.reminderModel
@@ -112,13 +114,13 @@ export class ReminderService {
       .exec();
   }
   async deleteAllCompleted(userId: string): Promise<{ deletedCount: number }> {
+    console.log(`Admin user already exists`, userId);
     const result = await this.reminderModel
       .deleteMany({
         user: userId,
-        status: true, // Assuming 'status: true' means the reminder is completed
+        status: REMINDER_STATUS.COMPLETED,
       })
       .exec();
-
     return { deletedCount: result.deletedCount };
   }
 
