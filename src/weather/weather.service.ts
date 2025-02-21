@@ -21,4 +21,16 @@ export class WeatherService {
       throw new Error('Failed to fetch weather data');
     }
   }
+
+  async getFiveDayForecast(latitude: number, longitude: number): Promise<any> {
+    const apiKey = this.configService.get<string>('WEATHER_API_KEY');
+    const apiUrl = `https://api.openweathermap.org/data/2.5/forecast?lat=${latitude}&lon=${longitude}&appid=${apiKey}&units=imperial`;
+
+    try {
+      const response = await firstValueFrom(this.httpService.get(apiUrl));
+      return response.data;
+    } catch (error) {
+      throw new Error('Failed to fetch 5-day forecast data');
+    }
+  }
 }
