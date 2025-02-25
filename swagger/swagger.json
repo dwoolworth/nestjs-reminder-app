@@ -479,7 +479,7 @@
         ],
         "responses": {
           "200": {
-            "description": "Returns weather data",
+            "description": "Returns current weather data",
             "content": {
               "application/json": {
                 "schema": {
@@ -543,7 +543,105 @@
             "bearer": []
           }
         ],
-        "summary": "Get weather data for a location",
+        "summary": "Get current weather data for a location",
+        "tags": [
+          "Weather"
+        ]
+      }
+    },
+    "/api/v1/weather/forecast": {
+      "get": {
+        "operationId": "WeatherController_getFiveDayForecast",
+        "parameters": [
+          {
+            "name": "latitude",
+            "required": true,
+            "in": "query",
+            "description": "Latitude of the location",
+            "schema": {
+              "type": "number"
+            }
+          },
+          {
+            "name": "longitude",
+            "required": true,
+            "in": "query",
+            "description": "Longitude of the location",
+            "schema": {
+              "type": "number"
+            }
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "Returns 5-day weather forecast data",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "type": "object",
+                  "properties": {
+                    "list": {
+                      "type": "array",
+                      "items": {
+                        "type": "object",
+                        "properties": {
+                          "dt": {
+                            "type": "number",
+                            "description": "Time of forecasted data, unix, UTC"
+                          },
+                          "main": {
+                            "type": "object",
+                            "properties": {
+                              "temp": {
+                                "type": "number",
+                                "description": "Temperature in Fahrenheit"
+                              },
+                              "feels_like": {
+                                "type": "number",
+                                "description": "Feels like temperature in Fahrenheit"
+                              },
+                              "humidity": {
+                                "type": "number",
+                                "description": "Humidity percentage"
+                              }
+                            }
+                          },
+                          "weather": {
+                            "type": "array",
+                            "items": {
+                              "type": "object",
+                              "properties": {
+                                "description": {
+                                  "type": "string",
+                                  "description": "Weather condition description"
+                                }
+                              }
+                            }
+                          }
+                        }
+                      }
+                    }
+                  }
+                }
+              }
+            }
+          },
+          "400": {
+            "description": "Bad Request - Invalid latitude or longitude"
+          },
+          "401": {
+            "description": "Unauthorized - Invalid or missing JWT token"
+          },
+          "500": {
+            "description": "Internal server error - Failed to fetch forecast data"
+          }
+        },
+        "security": [
+          {
+            "bearer": []
+          }
+        ],
+        "summary": "Get 5-day weather forecast for a location",
         "tags": [
           "Weather"
         ]
